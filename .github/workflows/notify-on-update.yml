@@ -1,0 +1,73 @@
+name: Report Update Notification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'build_update_feb.py'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install openpyxl
+        run: pip install openpyxl
+
+      - name: Run build and capture summary
+        id: build
+        run: |
+          OUTPUT=$(python3 build_update_feb.py 2>&1 || true)
+          echo "build_output<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Get commit info
+        id: commit
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          echo "message=$MSG" >> "$GITHUB_OUTPUT"
+          DATE=$(date -u +"%B %d, %Y")
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Create notification issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const buildOutput = `${{ steps.build.outputs.build_output }}`;
+            const commitMsg = `${{ steps.commit.outputs.message }}`;
+            const date = `${{ steps.commit.outputs.date }}`;
+
+            const body = [
+              `## FoD Uptime Report Updated`,
+              `**Date:** ${date}`,
+              `**Commit:** ${commitMsg}`,
+              ``,
+              `### Build Output`,
+              '```',
+              buildOutput,
+              '```',
+              ``,
+              `Report regenerated and pushed to repo.`,
+              `[Download latest report](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/FoD_Uptime_Report_2026.xlsx?raw=true)`,
+              ``,
+              `---`,
+              `*Automated by scheduled Claude Code agent*`
+            ].join('\n');
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📊 Report Updated: ${commitMsg}`,
+              body: body,
+              labels: ['report-update']
+            });
