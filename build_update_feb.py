@@ -22,7 +22,7 @@ green_font = Font(name=FN, size=11, bold=True, color="006100")
 # 2026 DATA (UPDATED: includes full Mar 2026 + Apr partial)
 # ============================================================
 raw_2026 = [
-    # Apr 2026 (partial - through Apr 4)
+    # Apr 2026 (partial - through Apr 16)
     ("2026-04-02 00:27","2026-04-02 01:17","Maintenance","Fortify on Demand Tenant Portal - FedRAMP"),
     ("2026-04-02 00:27","2026-04-02 01:17","Maintenance","Fortify on Demand API - FedRAMP"),
     # Mar 2026 (COMPLETE)
@@ -250,7 +250,7 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* April 2026 is in progress. Partial data through April 4, 2026. Uptime % will change as month completes.").font = note_font
+ws.cell(row=row, column=1, value="* April 2026 is in progress. Partial data through April 16, 2026. Uptime % will change as month completes.").font = note_font
 row += 2
 
 # SLA block
@@ -556,7 +556,7 @@ ws_apr.column_dimensions['G'].width = 85
 r = 1
 ws_apr.cell(row=r, column=1, value="April 2026 - Monthly Detail (Partial)").font = title_font
 r += 2
-ws_apr.cell(row=r, column=1, value="Month in progress. Partial data through April 4, 2026. To be finalized after April 30.").font = note_font
+ws_apr.cell(row=r, column=1, value="Month in progress. Partial data through April 16, 2026. To be finalized after April 30.").font = note_font
 r += 2
 
 apr_min = 43200
@@ -571,7 +571,7 @@ for label, val in [
     ("Outage Count (to date):", str(apr_stats['count'])),
     ("Outage Minutes (to date):", str(int(apr_stats['minutes']))),
     ("Uptime % (partial, not final):", f"{apr_up_partial*100:.4f}%"),
-    ("Status:", "IN PROGRESS, partial data through April 4, 2026"),
+    ("Status:", "IN PROGRESS, partial data through April 16, 2026"),
 ]:
     ws_apr.cell(row=r, column=1, value=label).font = section_font
     ws_apr.cell(row=r, column=2, value=val).font = body_font
@@ -709,7 +709,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: April 4, 2026 (March finalized; April stub added with partial data through Apr 4).")
+r = write_note(r, "Last updated: April 16, 2026 (mid-month update; April data through Apr 16, no new events since Apr 2).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -820,7 +820,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: April 4, 2026")
+r = write_note(r, "Last updated: April 16, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")
@@ -832,7 +832,7 @@ last_data_row = len(all_sorted) + 2  # header row + data rows + 1
 ws_raw.cell(row=last_data_row, column=1, value=f"Report revised: {revised_date}").font = note_font
 
 # Save
-output = "/Users/otchance/claude-workspace/work/data/reports/FoD_Uptime_Report_2026.xlsx"
+output = "/home/user/fod-uptime-reports/FoD_Uptime_Report_2026.xlsx"
 wb.save(output)
 print(f"Saved: {output}")
 print(f"Sheets: {wb.sheetnames}")
