@@ -24,6 +24,8 @@ green_font = Font(name=FN, size=11, bold=True, color="006100")
 # ============================================================
 raw_2026 = [
     # Apr 2026 (partial - through Apr 16)
+    ("2026-04-16 14:28","2026-04-16 14:38","Outage","Fortify on Demand Tenant Portal - EU"),
+    ("2026-04-16 14:26","2026-04-16 14:36","Outage","Fortify on Demand API - EU"),
     ("2026-04-10 20:56","2026-04-10 22:32","Maintenance","SAST Aviator / ams-sast-aviator"),
     ("2026-04-09 21:04","2026-04-09 21:34","Maintenance","SAST Aviator / eu-sast-aviator"),
     ("2026-04-09 19:11","2026-04-09 19:13","Outage","SAST Aviator / eu-sast-aviator"),
@@ -863,7 +865,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: April 16, 2026 (mid-month update; April data through Apr 16; events added: Apr 7 AMS Portal degradation, Apr 8 FedRAMP outage 3 min, Apr 9 EU SAST outage 2 min, Apr 9-10 SAST maintenance windows).")
+r = write_note(r, "Last updated: April 16, 2026 (mid-month update; April data through Apr 16; events added: Apr 7 AMS Portal degradation, Apr 8 FedRAMP outage 3 min, Apr 9 EU SAST outage 2 min, Apr 9-10 SAST maintenance windows, Apr 16 EU Portal/API outages 10 min each).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
