@@ -141,6 +141,39 @@ for inc in grouped:
     monthly[m]['count'] += 1
     monthly[m]['minutes'] += inc['duration']
 
+# Per-component outage minutes (no cross-component de-dup, for Regional Breakout tab)
+# Bucket mapping: "contains" string -> bucket name
+bucket_map = {
+    "Tenant Portal - FedRAMP": "FedRAMP Portal",
+    "API - FedRAMP": "FedRAMP API",
+    "Tenant Portal - AMS": "AMS Portal",
+    "API - AMS": "AMS API",
+    "Tenant Portal - EMEA": "EMEA Portal",
+    "API - EMEA": "EMEA API",
+    "Tenant Portal - APAC": "APAC Portal",
+    "API - APAC": "APAC API",
+    "Tenant Portal - SGP": "SGP Portal",
+    "API - SGP": "SGP API",
+    "Tenant Portal - EU": "EU Portal",
+    "API - EU": "EU API",
+    "eu-sast-aviator": "EU SAST Aviator",
+    "ams-sast-aviator": "AMS SAST Aviator",
+    "Debricked Fortify Integration": "Debricked Fortify Integration",
+    "Vulncat": "Vulncat",
+}
+
+def resolve_bucket(component_name):
+    for key, bucket in bucket_map.items():
+        if key in component_name:
+            return bucket
+    return component_name
+
+comp_monthly_outage = defaultdict(lambda: defaultdict(float))
+for sd, ed, dur, typ, comp in outages_only:
+    m = sd.strftime("%Y-%m")
+    bkt = resolve_bucket(comp)
+    comp_monthly_outage[bkt][m] += dur
+
 days_map = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
 
 def month_minutes(m_str):
