@@ -840,7 +840,7 @@ last_data_row = len(all_sorted) + 2  # header row + data rows + 1
 ws_raw.cell(row=last_data_row, column=1, value=f"Report revised: {revised_date}").font = note_font
 
 # Save
-output = "/home/user/fod-uptime-reports/FoD_Uptime_Report_2026.xlsx"
+output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "FoD_Uptime_Report_2026.xlsx")
 wb.save(output)
 print(f"Saved: {output}")
 print(f"Sheets: {wb.sheetnames}")
