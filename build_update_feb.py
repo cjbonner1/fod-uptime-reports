@@ -901,9 +901,19 @@ r = write_note(r, "  Minutes per day:   1440")
 r = write_note(r, "  SLA target:        99.9% (43.8 minutes of allowed downtime per month on a 30-day month)")
 r += 1
 
+r = write_note(r, "REGIONAL BREAKOUT TAB", True)
+r = write_note(r, "The 'Regional Breakout' tab provides per-component uptime percentages for every component tracked on status.fortify.com.")
+r = write_note(r, "This tab does NOT use de-duplication. Each component's outage minutes are calculated independently.")
+r = write_note(r, "This matches how status.fortify.com calculates and displays uptime per component.")
+r = write_note(r, "Only 'Outage' events count against uptime (consistent with the executive summary methodology).")
+r = write_note(r, "The tab has three sections: Core Services (Portal and API per region), SAST Aviator, and Other Services.")
+r = write_note(r, "Monthly columns show Jan through Dec. The YTD column covers completed months only (same as the executive summary).")
+r = write_note(r, "Added: April 2026.")
+r += 1
+
 r = write_note(r, "BUCKET MAPPING", True)
 r = write_note(r, "The 'Bucket Mapping' tab defines how raw component strings from the status page map to reporting buckets.")
-r = write_note(r, "Buckets group by region (FedRAMP, AMS, EMEA, APAC, SGP) and type (Portal, API, SAST Aviator, Vulncat).")
+r = write_note(r, "Buckets group by region (FedRAMP, AMS, EMEA, APAC, SGP, EU) and type (Portal, API, SAST Aviator, Vulncat, Debricked Fortify Integration).")
 r = write_note(r, "This mapping is used for per-bucket breakdowns if needed. The executive summary reports overall uptime.")
 r += 1
 
@@ -914,6 +924,11 @@ r = write_note(r, "  [2026 Executive Summary]  -  The yearly roll-up. One table 
 r = write_note(r, "                               Updated monthly. Future months show '-' until data is available.")
 r = write_note(r, "                               Key observations in column G. This is the tab leadership reads.")
 r = write_note(r, "")
+r = write_note(r, "  [Regional Breakout]        -  Per-component uptime percentages for every status page component.")
+r = write_note(r, "                               Three sections: Core Services (Portal/API by region), SAST Aviator, Other Services.")
+r = write_note(r, "                               Monthly columns plus YTD. No cross-component de-duplication.")
+r = write_note(r, "                               Numbers match status.fortify.com exactly.")
+
 r = write_note(r, "  [Mon YYYY] (e.g. Jan 2026) - One tab per completed month. Contains: monthly summary block, daily outage table")
 r = write_note(r, "                               (sorted worst-day-first), affected services list, and detailed incident write-ups.")
 r = write_note(r, "                               Each incident includes: date, services, time range, and impact assessment.")
