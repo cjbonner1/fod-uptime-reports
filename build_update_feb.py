@@ -312,8 +312,118 @@ for line in sla:
     ws.cell(row=row, column=1, value=line).font = body_font
     row += 1
 
+
 # ============================================================
-# TAB 2: Jan 2026 (detail tab - unchanged)
+# TAB 2: Regional Breakout (per-component uptime)
+# ============================================================
+ws_rb = wb.create_sheet("Regional Breakout")
+ws_rb.column_dimensions['A'].width = 30
+
+all_months = ["2026-01","2026-02","2026-03","2026-04","2026-05","2026-06",
+              "2026-07","2026-08","2026-09","2026-10","2026-11","2026-12"]
+month_labels = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+# Completed months for YTD (same as exec summary)
+ytd_months = months_complete
+
+rb_row = 1
+ws_rb.cell(row=rb_row, column=1, value="Regional Breakout: Per-Component Uptime").font = title_font
+rb_row += 2
+
+def write_rb_section(start_row, section_title, components):
+    """Write a section of the Regional Breakout tab. Returns next available row."""
+    r = start_row
+    ws_rb.cell(row=r, column=1, value=section_title).font = section_font
+    r += 1
+
+    # Header row: Component | Jan | Feb | ... | Dec | YTD
+    headers = ["Component"] + month_labels + ["YTD"]
+    for ci, h in enumerate(headers):
+        c = ws_rb.cell(row=r, column=ci + 1, value=h)
+        c.font = hdr_font_w
+        c.fill = hdr_fill
+        c.border = thin_border
+        c.alignment = Alignment(horizontal="center")
+    # Set month column widths
+    for ci in range(2, 15):
+        ws_rb.column_dimensions[get_column_letter(ci)].width = 10
+    r += 1
+
+    for comp_name in components:
+        ws_rb.cell(row=r, column=1, value=comp_name).font = body_font
+        ws_rb.cell(row=r, column=1).border = thin_border
+
+        ytd_outage = 0.0
+        ytd_total = 0.0
+
+        for mi, m_str in enumerate(all_months):
+            col = mi + 2
+            is_future = m_str > "2026-04"
+            is_partial = m_str == "2026-04"
+            tm = month_minutes(m_str)
+            outage_min = comp_monthly_outage[comp_name].get(m_str, 0.0)
+
+            if is_future:
+                ws_rb.cell(row=r, column=col, value="-").font = note_font
+                ws_rb.cell(row=r, column=col).border = thin_border
+                ws_rb.cell(row=r, column=col).alignment = Alignment(horizontal="center")
+            else:
+                up = 1 - (outage_min / tm) if tm > 0 else 1
+                cell = ws_rb.cell(row=r, column=col, value=up)
+                cell.number_format = "0.0000%"
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal="center")
+                if is_partial:
+                    cell.font = note_font
+                elif up >= 0.999:
+                    cell.font = green_font
+                else:
+                    cell.font = body_font
+
+            # Accumulate YTD from completed months only
+            if m_str in ytd_months:
+                ytd_outage += outage_min
+                ytd_total += tm
+
+        # YTD column (col 14)
+        if ytd_total > 0:
+            ytd_up = 1 - (ytd_outage / ytd_total)
+            ytd_cell = ws_rb.cell(row=r, column=14, value=ytd_up)
+            ytd_cell.number_format = "0.0000%"
+            ytd_cell.border = thin_border
+            ytd_cell.alignment = Alignment(horizontal="center")
+            if ytd_up >= 0.999:
+                ytd_cell.font = green_font
+            else:
+                ytd_cell.font = body_font
+        else:
+            ws_rb.cell(row=r, column=14, value="-").font = note_font
+            ws_rb.cell(row=r, column=14).border = thin_border
+
+        r += 1
+    return r + 1  # blank row after section
+
+core_services = [
+    "FedRAMP Portal", "FedRAMP API",
+    "AMS Portal", "AMS API",
+    "EMEA Portal", "EMEA API",
+    "APAC Portal", "APAC API",
+    "SGP Portal", "SGP API",
+    "EU Portal", "EU API",
+]
+sast_aviator = ["AMS SAST Aviator", "EU SAST Aviator"]
+other_services = ["Debricked Fortify Integration", "Vulncat"]
+
+rb_row = write_rb_section(rb_row, "Core Services", core_services)
+rb_row = write_rb_section(rb_row, "SAST Aviator", sast_aviator)
+rb_row = write_rb_section(rb_row, "Other Services", other_services)
+
+# Footer note
+ws_rb.cell(row=rb_row, column=1, value="* April 2026 is in progress. Partial data shown in italics.").font = note_font
+rb_row += 1
+ws_rb.cell(row=rb_row, column=1, value="Uptime = (total_month_minutes - outage_minutes) / total_month_minutes. Only Outage events counted. No cross-component de-duplication.").font = note_font
+
+# ============================================================
+# TAB 3: Jan 2026 (detail tab - unchanged)
 # ============================================================
 ws_jan = wb.create_sheet("Jan 2026")
 ws_jan.column_dimensions['A'].width = 42
@@ -400,7 +510,7 @@ for idx, inc in enumerate(jan_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 3: Feb 2026 (FINALIZED - complete month)
+# TAB 4: Feb 2026 (FINALIZED - complete month)
 # ============================================================
 ws_feb = wb.create_sheet("Feb 2026")
 ws_feb.column_dimensions['A'].width = 42
@@ -490,7 +600,7 @@ for idx, inc in enumerate(feb_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 4: Mar 2026 (FINALIZED - complete month)
+# TAB 5: Mar 2026 (FINALIZED - complete month)
 # ============================================================
 ws_mar = wb.create_sheet("Mar 2026")
 ws_mar.column_dimensions['A'].width = 42
@@ -584,7 +694,7 @@ for idx, inc in enumerate(mar_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 5: Apr 2026 (stub - in progress)
+# TAB 6: Apr 2026 (stub - in progress)
 # ============================================================
 ws_apr = wb.create_sheet("Apr 2026")
 ws_apr.column_dimensions['A'].width = 42
@@ -680,7 +790,7 @@ for idx, inc in enumerate(apr_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 6: 2026 Incident Data (raw)
+# TAB 7: 2026 Incident Data (raw)
 # ============================================================
 ws_raw = wb.create_sheet("2026 Incident Data")
 headers_raw = ["Event Type", "Start Date Time", "End Date Time", "Service", "Duration Minutes", "Month"]
@@ -703,7 +813,7 @@ ws_raw.column_dimensions['E'].width = 18
 ws_raw.column_dimensions['F'].width = 12
 
 # ============================================================
-# TAB 6: Bucket Mapping
+# TAB 8: Bucket Mapping
 # ============================================================
 ws_bkt = wb.create_sheet("Bucket Mapping")
 map_headers = ["Component Contains", "Bucket", "Region", "Type"]
@@ -736,7 +846,7 @@ for i, w in enumerate([32, 22, 14, 14], 1):
     ws_bkt.column_dimensions[get_column_letter(i)].width = w
 
 # ============================================================
-# TAB 7: Notes & Methodology
+# TAB 9: Notes & Methodology
 # ============================================================
 ws_notes = wb.create_sheet("Notes & Methodology")
 ws_notes.column_dimensions['A'].width = 120
