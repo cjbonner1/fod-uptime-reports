@@ -716,11 +716,14 @@ map_data = [
     ("API - EMEA", "EMEA API", "EMEA", "API"),
     ("Tenant Portal - APAC", "APAC Portal", "APAC", "Portal"),
     ("API - APAC", "APAC API", "APAC", "API"),
-    ("Tenant Portal - SGP", "APAC/SGP Portal", "APAC/SGP", "Portal"),
-    ("API - SGP", "APAC/SGP API", "APAC/SGP", "API"),
+    ("Tenant Portal - SGP", "SGP Portal", "SGP", "Portal"),
+    ("API - SGP", "SGP API", "SGP", "API"),
     ("Vulncat", "Vulncat", "Global", "Service"),
     ("eu-sast-aviator", "EU SAST Aviator", "EU", "SAST Aviator"),
     ("ams-sast-aviator", "AMS SAST Aviator", "AMS", "SAST Aviator"),
+    ("Tenant Portal - EU", "EU Portal", "EU", "Portal"),
+    ("API - EU", "EU API", "EU", "API"),
+    ("Debricked Fortify Integration", "Debricked Fortify Integration", "Global", "Service"),
 ]
 for col, h in enumerate(map_headers, 1):
     c = ws_bkt.cell(row=1, column=col, value=h)
