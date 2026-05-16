@@ -20,9 +20,22 @@ light_fill = PatternFill("solid", fgColor="D6E4F0")
 green_font = Font(name=FN, size=11, bold=True, color="006100")
 
 # ============================================================
-# 2026 DATA (UPDATED: includes full Mar 2026 + full Apr 2026)
+# 2026 DATA (UPDATED: includes full Mar 2026 + full Apr 2026 + May 2026 partial through 2026-05-16)
 # ============================================================
 raw_2026 = [
+    # May 2026 (partial through 2026-05-16)
+    ("2026-05-13 14:30","2026-05-13 14:35","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-05-13 14:30","2026-05-13 14:35","Service Degradation","Fortify on Demand API - AMS"),
+    ("2026-05-11 14:06","2026-05-12 01:19","Maintenance","Fortify on Demand Tenant Portal - SGP"),
+    ("2026-05-11 14:06","2026-05-12 01:19","Maintenance","Fortify on Demand API - SGP"),
+    ("2026-05-10 21:09","2026-05-10 21:11","Outage","SAST Aviator / ams-sast-aviator"),
+    ("2026-05-09 19:11","2026-05-09 19:13","Outage","SAST Aviator / eu-sast-aviator"),
+    ("2026-05-08 09:39","2026-05-08 11:51","Maintenance","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-05-08 09:39","2026-05-08 11:51","Maintenance","Fortify on Demand API - AMS"),
+    ("2026-05-07 19:05","2026-05-08 18:20","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-05-07 19:05","2026-05-08 18:20","Service Degradation","Fortify on Demand API - AMS"),
+    ("2026-05-04 17:22","2026-05-04 18:34","Maintenance","Fortify on Demand Tenant Portal - APAC"),
+    ("2026-05-04 17:22","2026-05-04 18:34","Maintenance","Fortify on Demand API - APAC"),
     # Apr 2026 (COMPLETE)
     ("2026-04-30 03:17","2026-04-30 05:59","Maintenance","Fortify on Demand Tenant Portal - AMS"),
     ("2026-04-30 03:17","2026-04-30 05:59","Maintenance","Fortify on Demand API - AMS"),
@@ -38,6 +51,8 @@ raw_2026 = [
     ("2026-04-29 15:45","2026-04-29 20:18","Maintenance","Fortify on Demand API - SGP"),
     ("2026-04-24 18:12","2026-04-24 22:14","Maintenance","Fortify on Demand Tenant Portal - EMEA"),
     ("2026-04-24 18:12","2026-04-24 22:14","Maintenance","Fortify on Demand API - EMEA"),
+    ("2026-04-22 16:29","2026-05-04 16:21","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-04-22 16:29","2026-05-04 16:21","Service Degradation","Fortify on Demand API - AMS"),
     ("2026-04-21 20:43","2026-04-22 16:30","Maintenance","Fortify on Demand Tenant Portal - EU"),
     ("2026-04-21 20:43","2026-04-22 16:30","Maintenance","Fortify on Demand API - EU"),
     ("2026-04-17 22:57","2026-04-20 22:21","Maintenance","Fortify on Demand Tenant Portal - AMS"),
@@ -234,7 +249,7 @@ ytd_uptime = 1 - (ytd_outage_min / ytd_minutes)
 ws.cell(row=row, column=1, value="Report Period: Calendar Year 2026").font = body_font
 ws.cell(row=row, column=7, value=f"1. January: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); February: {monthly['2026-02']['count']} outages ({monthly['2026-02']['minutes']:.0f} min); March: {monthly.get('2026-03',{'count':0})['count']} outages ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); April: {monthly.get('2026-04',{'count':0})['count']} outages ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min)").font = body_font
 row += 1
-ws.cell(row=row, column=1, value=f"Completed Months: January - April 2026 (May in progress)").font = body_font
+ws.cell(row=row, column=1, value=f"Completed Months: January - April 2026 (May in progress, partial through May 16)").font = body_font
 ws.cell(row=row, column=7, value=f"2. March 2 remains the worst single day in 2026 (FedRAMP Portal/API, 44 min); April 16 EU Portal/API outage (10 min) was the largest April incident").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outages: {ytd_outage_count} incidents (completed months)").font = body_font
@@ -311,7 +326,7 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* May 2026 is in progress. Data will be finalized after May 31, 2026.").font = note_font
+ws.cell(row=row, column=1, value="* May 2026 is in progress. Partial data through May 16, 2026. Will be finalized after May 31, 2026.").font = note_font
 row += 2
 
 # SLA block
@@ -821,7 +836,7 @@ ws_may.column_dimensions['G'].width = 85
 r = 1
 ws_may.cell(row=r, column=1, value="May 2026 - Monthly Detail (Partial)").font = title_font
 r += 2
-ws_may.cell(row=r, column=1, value="Month in progress. To be finalized after May 31, 2026.").font = note_font
+ws_may.cell(row=r, column=1, value="Month in progress. Partial data through May 16, 2026. To be finalized after May 31, 2026.").font = note_font
 r += 2
 
 may_min = 44640
@@ -977,7 +992,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: May 2, 2026 (April finalized; April complete through Apr 30; events added Apr 17-30: AMS maintenance Apr 17-20, EU maintenance Apr 21-22, EMEA maintenance Apr 24, multi-region maintenance Apr 29-30; no new outages Apr 17-30).")
+r = write_note(r, "Last updated: May 16, 2026 (mid-month snapshot through May 16; 2 outages added: AMS SAST Aviator May 10 2 min, EU SAST Aviator May 9 2 min; maintenance added: APAC May 4, AMS May 8, SGP May 11-12; service degradation events: AMS May 7-8 and May 13; Apr 22 - May 4 AMS service degradation back-filled to April data).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -1103,7 +1118,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: May 2, 2026")
+r = write_note(r, "Last updated: May 16, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")
