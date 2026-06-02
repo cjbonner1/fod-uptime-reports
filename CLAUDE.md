@@ -16,7 +16,7 @@ Chance Bonner (cbonner@opentext.com). Security/data professional at OpenText. Wo
 ## Projects
 | Name | What |
 |------|------|
-| **FoD Uptime Report 2026** | Monthly uptime report from status.fortify.com/history. Excel workbook, updated monthly. Currently through Feb 2026. |
+| **FoD Uptime Report 2026** | Monthly uptime report from status.fortify.com/history. Excel workbook, updated monthly. Currently through May 2026. |
 → Details: memory/projects/fod-uptime-report.md
 
 ## Preferences

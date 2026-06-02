@@ -5,7 +5,7 @@
 **Build Script:** build_update_feb.py (Python/openpyxl, generates entire workbook from scratch)
 **Owner:** Chance Bonner (cbonner@opentext.com)
 **Created:** February 19, 2026
-**Last Updated:** May 2, 2026 (April finalized)
+**Last Updated:** June 2, 2026 (May finalized)
 
 ## What It Is
 Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, and calculates uptime percentage against a 99.9% SLA target. Delivered as an Excel workbook.
@@ -28,10 +28,11 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 4. **Feb 2026** - Completed month detail (same structure as Jan).
 5. **Mar 2026** - Completed month detail.
 6. **Apr 2026** - Completed month detail.
-7. **May 2026** - Stub tab (in progress, to be finalized after May 31).
-8. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
-9. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
-10. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
+7. **May 2026** - Completed month detail.
+8. **Jun 2026** - Stub tab (in progress, to be finalized after Jun 30).
+9. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
+10. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
+11. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
 
 ## Current Numbers
 | Month | Outages | Minutes | Uptime |
@@ -40,7 +41,8 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 | Feb 2026 | 3 | 9 | 99.9777% |
 | Mar 2026 | 7 | 57 | 99.8723% |
 | Apr 2026 | 4 | 25 | 99.9421% |
-| **YTD** | **18** | **96** | **99.9444%** |
+| May 2026 | 2 | 4 | 99.9910% |
+| **YTD** | **20** | **100** | **99.9540%** |
 
 SLA Status: MEETING TARGET (99.9%) - YTD; March individually was below monthly SLA (57 min > 44.64 min allowed)
 
