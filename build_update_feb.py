@@ -20,14 +20,36 @@ light_fill = PatternFill("solid", fgColor="D6E4F0")
 green_font = Font(name=FN, size=11, bold=True, color="006100")
 
 # ============================================================
-# 2026 DATA (UPDATED: includes full Jan-May 2026 + partial Jun 2026 through 2026-06-16)
+# 2026 DATA (UPDATED: includes full Jan-Jun 2026)
 # ============================================================
 raw_2026 = [
-    # Jun 2026 (partial through 2026-06-16)
+    # Jun 2026 (COMPLETE)
+    ("2026-06-27 00:18","2026-06-27 00:40","Maintenance","Fortify on Demand Tenant Portal - FedRAMP"),
+    ("2026-06-27 00:18","2026-06-27 00:40","Maintenance","Fortify on Demand API - FedRAMP"),
+    ("2026-06-25 18:24","2026-06-25 21:36","Maintenance","Fortify on Demand Tenant Portal - EMEA"),
+    ("2026-06-25 18:24","2026-06-25 21:36","Maintenance","Fortify on Demand API - EMEA"),
+    ("2026-06-25 18:23","2026-06-25 21:07","Maintenance","Fortify on Demand Tenant Portal - EU"),
+    ("2026-06-25 18:23","2026-06-25 21:07","Maintenance","Fortify on Demand API - EU"),
+    ("2026-06-25 04:06","2026-06-25 08:18","Maintenance","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-06-25 04:06","2026-06-25 08:18","Maintenance","Fortify on Demand API - AMS"),
+    ("2026-06-25 00:26","2026-06-25 01:08","Maintenance","Fortify on Demand Tenant Portal - EU"),
+    ("2026-06-25 00:26","2026-06-25 01:08","Maintenance","Fortify on Demand API - EU"),
+    ("2026-06-24 23:19","2026-06-25 00:57","Maintenance","Fortify on Demand Tenant Portal - EMEA"),
+    ("2026-06-24 23:19","2026-06-25 00:57","Maintenance","Fortify on Demand API - EMEA"),
+    ("2026-06-24 13:57","2026-06-24 15:20","Maintenance","Fortify on Demand Tenant Portal - SGP"),
+    ("2026-06-24 13:57","2026-06-24 15:20","Maintenance","Fortify on Demand API - SGP"),
+    ("2026-06-24 13:51","2026-06-24 15:47","Maintenance","Fortify on Demand Tenant Portal - APAC"),
+    ("2026-06-24 13:51","2026-06-24 15:47","Maintenance","Fortify on Demand API - APAC"),
+    ("2026-06-23 17:55","2026-06-23 18:45","Maintenance","SAST Aviator / eu-sast-aviator"),
+    ("2026-06-22 21:08","2026-06-22 21:40","Maintenance","SAST Aviator / ams-sast-aviator"),
+    ("2026-06-11 11:50","2026-06-25 13:23","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-06-11 11:50","2026-06-25 13:23","Service Degradation","Fortify on Demand API - AMS"),
     ("2026-06-09 21:09","2026-06-09 21:11","Outage","SAST Aviator / ams-sast-aviator"),
     ("2026-06-09 16:55","2026-06-10 22:44","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
     ("2026-06-09 16:55","2026-06-10 22:44","Service Degradation","Fortify on Demand API - AMS"),
     ("2026-06-08 19:11","2026-06-08 19:13","Outage","SAST Aviator / eu-sast-aviator"),
+    ("2026-06-04 21:22","2026-06-05 12:25","Maintenance","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-06-04 21:22","2026-06-05 12:25","Maintenance","Fortify on Demand API - AMS"),
     # May 2026 (COMPLETE)
     ("2026-05-28 03:57","2026-05-28 05:43","Maintenance","Fortify on Demand Tenant Portal - AMS"),
     ("2026-05-28 03:57","2026-05-28 05:43","Maintenance","Fortify on Demand API - AMS"),
@@ -259,26 +281,26 @@ ws.cell(row=row, column=7, value="Key Observations").font = section_font
 row += 2
 
 # YTD stats (Jan + Feb + Mar + Apr all complete)
-months_complete = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05"]
+months_complete = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"]
 ytd_minutes = sum(month_minutes(m) for m in months_complete)
 ytd_outage_min = sum(monthly.get(m, {'minutes':0})['minutes'] for m in months_complete)
 ytd_outage_count = sum(monthly.get(m, {'count':0})['count'] for m in months_complete)
 ytd_uptime = 1 - (ytd_outage_min / ytd_minutes)
 
 ws.cell(row=row, column=1, value="Report Period: Calendar Year 2026").font = body_font
-ws.cell(row=row, column=7, value=f"1. Jan: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); Feb: {monthly['2026-02']['count']} outages ({monthly['2026-02']['minutes']:.0f} min); Mar: {monthly.get('2026-03',{'count':0})['count']} outages ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); Apr: {monthly.get('2026-04',{'count':0})['count']} outages ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min); May: {monthly.get('2026-05',{'count':0})['count']} outages ({monthly.get('2026-05',{'minutes':0})['minutes']:.0f} min); Jun (partial thru Jun 16): {monthly['2026-06']['count']} outages ({monthly['2026-06']['minutes']:.0f} min)").font = body_font
+ws.cell(row=row, column=7, value=f"1. Jan: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); Feb: {monthly['2026-02']['count']} ({monthly['2026-02']['minutes']:.0f} min); Mar: {monthly.get('2026-03',{'count':0})['count']} ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); Apr: {monthly.get('2026-04',{'count':0})['count']} ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min); May: {monthly.get('2026-05',{'count':0})['count']} ({monthly.get('2026-05',{'minutes':0})['minutes']:.0f} min); Jun: {monthly.get('2026-06',{'count':0})['count']} ({monthly.get('2026-06',{'minutes':0})['minutes']:.0f} min)").font = body_font
 row += 1
-ws.cell(row=row, column=1, value=f"Completed Months: January - May 2026 (June partial through Jun 16, 2026)").font = body_font
-ws.cell(row=row, column=7, value=f"2. March 2 remains the worst single day in 2026 (FedRAMP Portal/API, 44 min); April 16 EU Portal/API outage (10 min) was the largest April incident").font = body_font
+ws.cell(row=row, column=1, value=f"Completed Months: January - June 2026").font = body_font
+ws.cell(row=row, column=7, value=f"2. March 2 remains the worst single day in 2026 (FedRAMP Portal/API, 44 min); April 16 EU Portal/API outage (10 min) was the largest April incident; Jun had no outages beyond the 2 brief SAST events on Jun 8-9").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outages: {ytd_outage_count} incidents (completed months)").font = body_font
 ws.cell(row=row, column=7, value="3. SAST Aviator (EU/AMS) continued brief outage pattern: Mar 11, 13, 17, 18; Apr 9 EU SAST 2 min; May 9 EU SAST 2 min, May 10 AMS SAST 2 min; Jun 8 EU SAST 2 min, Jun 9 AMS SAST 2 min").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outage Time: {ytd_outage_min:.0f} minutes ({ytd_outage_min/60:.2f} hours) (completed months)").font = body_font
-ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% continues to exceed the 99.9% SLA target across all five completed months").font = body_font
+ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% continues to exceed the 99.9% SLA target across all six completed months").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Uptime: {ytd_uptime*100:.4f}% (completed months only)").font = body_font
-ws.cell(row=row, column=7, value="5. SAST Aviator (EU/AMS) accounts for the majority of incidents across all months; FedRAMP had the single worst day on Mar 2 (44 min)").font = body_font
+ws.cell(row=row, column=7, value="5. Jun 24-25 saw a large scheduled maintenance window across EMEA, EU, AMS, APAC, SGP with no associated outages; FedRAMP maintained on Jun 27").font = body_font
 row += 2
 
 # Monthly Summary Table
@@ -292,8 +314,8 @@ row += 1
 for m in ["2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10","2026-11","2026-12"]:
     stats = monthly.get(m, {'count':0, 'minutes':0})
     tm = month_minutes(m)
-    is_future = m > "2026-06"
-    is_partial = m == "2026-06"
+    is_future = m > "2026-07"
+    is_partial = m == "2026-07"
 
     ws.cell(row=row, column=1, value=m).font = body_font
     ws.cell(row=row, column=1).border = thin_border
@@ -345,11 +367,11 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* June 2026 is in progress (partial through June 16, 2026). Will be finalized after June 30, 2026.").font = note_font
+ws.cell(row=row, column=1, value="* July 2026 is in progress. Will be finalized after July 31, 2026.").font = note_font
 row += 2
 
 # SLA block
-ws.cell(row=row, column=1, value="2026 SLA Performance (Completed Months: Jan - May)").font = section_font
+ws.cell(row=row, column=1, value="2026 SLA Performance (Completed Months: Jan - Jun)").font = section_font
 row += 2
 avg_dur = ytd_outage_min / max(ytd_outage_count, 1)
 sla = [
@@ -411,8 +433,8 @@ def write_rb_section(start_row, section_title, components):
 
         for mi, m_str in enumerate(all_months):
             col = mi + 2
-            is_future = m_str > "2026-06"
-            is_partial = m_str == "2026-06"
+            is_future = m_str > "2026-07"
+            is_partial = m_str == "2026-07"
             tm = month_minutes(m_str)
             outage_min = comp_monthly_outage[comp_name].get(m_str, 0.0)
 
@@ -472,7 +494,7 @@ rb_row = write_rb_section(rb_row, "SAST Aviator", sast_aviator)
 rb_row = write_rb_section(rb_row, "Other Services", other_services)
 
 # Footer note
-ws_rb.cell(row=rb_row, column=1, value="* June 2026 is in progress. Partial data shown in italics.").font = note_font
+ws_rb.cell(row=rb_row, column=1, value="* July 2026 is in progress. Partial data shown in italics.").font = note_font
 rb_row += 1
 ws_rb.cell(row=rb_row, column=1, value="Uptime = (total_month_minutes - outage_minutes) / total_month_minutes. Only Outage events counted. No cross-component de-duplication.").font = note_font
 
@@ -936,7 +958,7 @@ for idx, inc in enumerate(may_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 8: Jun 2026 (stub - in progress)
+# TAB 8: Jun 2026 (FINALIZED - complete month)
 # ============================================================
 ws_jun = wb.create_sheet("Jun 2026")
 ws_jun.column_dimensions['A'].width = 42
@@ -944,29 +966,122 @@ ws_jun.column_dimensions['B'].width = 16
 ws_jun.column_dimensions['C'].width = 18
 ws_jun.column_dimensions['D'].width = 18
 ws_jun.column_dimensions['E'].width = 18
+ws_jun.column_dimensions['G'].width = 85
 
 r = 1
-ws_jun.cell(row=r, column=1, value="June 2026 - Monthly Detail (Partial)").font = title_font
-r += 2
-ws_jun.cell(row=r, column=1, value="Month in progress. Partial data through June 16, 2026. Will be finalized after June 30, 2026.").font = note_font
+ws_jun.cell(row=r, column=1, value="June 2026 - Monthly Detail").font = title_font
 r += 2
 
 jun_min = 43200
 jun_stats = monthly.get("2026-06", {'count':0,'minutes':0})
-jun_up_partial = 1 - (jun_stats['minutes'] / jun_min) if jun_stats['minutes'] > 0 else 1
+jun_up = 1 - (jun_stats['minutes'] / jun_min) if jun_stats['minutes'] > 0 else 1
 
-ws_jun.cell(row=r, column=1, value="Monthly Summary (Partial)").font = section_font
+ws_jun.cell(row=r, column=1, value="Monthly Summary").font = section_font
 r += 2
 for label, val in [
     ("Period:", "June 1 - 30, 2026"),
     ("Total Minutes:", f"{jun_min:,}"),
-    ("Outage Count (to date):", str(jun_stats['count'])),
-    ("Outage Minutes (to date):", str(int(jun_stats['minutes']))),
-    ("Uptime % (partial, not final):", f"{jun_up_partial*100:.4f}%"),
-    ("Status:", "IN PROGRESS"),
+    ("Outage Count:", str(jun_stats['count'])),
+    ("Outage Minutes:", str(int(jun_stats['minutes']))),
+    ("Uptime %:", f"{jun_up*100:.4f}%"),
+    ("SLA Status:", "MEETING TARGET (99.9%)" if jun_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_jun.cell(row=r, column=1, value=label).font = section_font
     ws_jun.cell(row=r, column=2, value=val).font = body_font
+    r += 1
+r += 1
+
+ws_jun.cell(row=r, column=1, value="Daily Outage Report").font = section_font
+r += 1
+for col, h in enumerate(["Date", "Outage Count", "Outage Minutes", "Uptime Percentage"], 1):
+    c = ws_jun.cell(row=r, column=col, value=h)
+    c.font = hdr_font_w; c.fill = hdr_fill; c.border = thin_border; c.alignment = Alignment(horizontal="center")
+r += 1
+
+jun_daily = {d: s for d, s in daily.items() if d.month == 6 and d.year == 2026}
+for d, stats in sorted(jun_daily.items(), key=lambda x: -x[1]['minutes']):
+    ws_jun.cell(row=r, column=1, value=datetime(d.year, d.month, d.day)).font = body_font
+    ws_jun.cell(row=r, column=1).number_format = "mm-dd-yy"
+    ws_jun.cell(row=r, column=1).border = thin_border
+    ws_jun.cell(row=r, column=2, value=stats['count']).font = body_font
+    ws_jun.cell(row=r, column=2).border = thin_border
+    ws_jun.cell(row=r, column=3, value=int(stats['minutes'])).font = body_font
+    ws_jun.cell(row=r, column=3).border = thin_border
+    ws_jun.cell(row=r, column=4, value=1 - (stats['minutes']/1440)).font = body_font
+    ws_jun.cell(row=r, column=4).number_format = "0.00%"
+    ws_jun.cell(row=r, column=4).border = thin_border
+    r += 1
+r += 1
+
+ws_jun.cell(row=r, column=1, value="Services Affected").font = section_font
+r += 2
+jun_svcs = set()
+for inc in grouped:
+    if inc['start'].month == 6 and inc['start'].year == 2026:
+        for c in inc['components']: jun_svcs.add(c)
+for svc in sorted(jun_svcs):
+    ws_jun.cell(row=r, column=1, value=svc).font = body_font
+    r += 1
+r += 2
+
+ws_jun.cell(row=r, column=1, value="Detailed Incidents").font = section_font
+r += 2
+jun_incs = sorted([inc for inc in grouped if inc['start'].month == 6 and inc['start'].year == 2026], key=lambda x: -x['duration'])
+for idx, inc in enumerate(jun_incs, 1):
+    comps = inc['components']
+    dur = inc['duration']
+    date_fmt = inc['start'].strftime("%B %d, %Y")
+    start_fmt = inc['start'].strftime("%-I:%M %p GMT")
+    end_fmt = inc['end'].strftime("%-I:%M %p GMT")
+    if len(comps) > 1:
+        title = f"{idx}. {date_fmt} - Multiple Outages ({dur:.0f} minutes total)"
+    else:
+        title = f"{idx}. {date_fmt} - Outage ({dur:.0f} minute{'s' if dur != 1 else ''})"
+    ws_jun.cell(row=r, column=1, value=title).font = section_font
+    r += 2
+    if len(comps) > 1:
+        for ci, c in enumerate(comps, 1):
+            ws_jun.cell(row=r, column=1, value=f"Service {ci}: {c}").font = body_font
+            r += 1
+    else:
+        ws_jun.cell(row=r, column=1, value=f"Service: {comps[0]}").font = body_font
+        r += 1
+    ws_jun.cell(row=r, column=1, value=f"Time: {start_fmt}-{end_fmt}").font = body_font
+    r += 1
+    ws_jun.cell(row=r, column=1, value="Impact: Brief service disruption").font = body_font
+    r += 2
+
+# ============================================================
+# TAB 9: Jul 2026 (stub - in progress)
+# ============================================================
+ws_jul = wb.create_sheet("Jul 2026")
+ws_jul.column_dimensions['A'].width = 42
+ws_jul.column_dimensions['B'].width = 16
+ws_jul.column_dimensions['C'].width = 18
+ws_jul.column_dimensions['D'].width = 18
+ws_jul.column_dimensions['E'].width = 18
+
+r = 1
+ws_jul.cell(row=r, column=1, value="July 2026 - Monthly Detail (In Progress)").font = title_font
+r += 2
+ws_jul.cell(row=r, column=1, value="Month in progress. Will be finalized after July 31, 2026.").font = note_font
+r += 2
+
+jul_min = 44640
+jul_stats = monthly.get("2026-07", {'count':0,'minutes':0})
+jul_up_partial = 1 - (jul_stats['minutes'] / jul_min) if jul_stats['minutes'] > 0 else 1
+
+ws_jul.cell(row=r, column=1, value="Monthly Summary (In Progress)").font = section_font
+r += 2
+for label, val in [
+    ("Period:", "July 1 - 31, 2026"),
+    ("Total Minutes:", f"{jul_min:,}"),
+    ("Outage Count (to date):", str(jul_stats['count'])),
+    ("Outage Minutes (to date):", str(int(jul_stats['minutes']))),
+    ("Status:", "IN PROGRESS"),
+]:
+    ws_jul.cell(row=r, column=1, value=label).font = section_font
+    ws_jul.cell(row=r, column=2, value=val).font = body_font
     r += 1
 
 # ============================================================
@@ -1043,7 +1158,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: June 16, 2026 (mid-month update; Jun 2026 partial data added through Jun 16: 2 outages (EU SAST Aviator Jun 8 2 min, AMS SAST Aviator Jun 9 2 min) + AMS service degradation Jun 9-10; times converted from BST to GMT).")
+r = write_note(r, "Last updated: July 2, 2026 (Jun 2026 finalized: 2 outages (EU SAST Aviator Jun 8 2 min, AMS SAST Aviator Jun 9 2 min), 4 total outage minutes, 99.9907% uptime; new maintenance events Jun 4-5, 22-27 added; AMS service degradation Jun 11-Jun 25 recorded; times converted from BST to GMT).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -1169,7 +1284,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: June 16, 2026")
+r = write_note(r, "Last updated: July 2, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")
@@ -1190,6 +1305,7 @@ print(f"Feb: {feb_stats['count']} outages, {feb_stats['minutes']:.0f} min, {feb_
 print(f"Mar: {mar_stats['count']} outages, {mar_stats['minutes']:.0f} min, {mar_up*100:.4f}%")
 print(f"Apr: {apr_stats['count']} outages, {apr_stats['minutes']:.0f} min, {apr_up*100:.4f}%")
 print(f"May: {may_stats['count']} outages, {may_stats['minutes']:.0f} min, {may_up*100:.4f}%")
+print(f"Jun: {jun_stats['count']} outages, {jun_stats['minutes']:.0f} min, {jun_up*100:.4f}%")
 print(f"YTD: {ytd_outage_count} outages, {ytd_outage_min:.0f} min, {ytd_uptime*100:.4f}%")
 print(f"Raw rows: {len(parsed)}")
 print(f"De-duped outage incidents: {len(grouped)}")
