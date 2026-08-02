@@ -5,7 +5,7 @@
 **Build Script:** build_update_feb.py (Python/openpyxl, generates entire workbook from scratch)
 **Owner:** Chance Bonner (cbonner@opentext.com)
 **Created:** February 19, 2026
-**Last Updated:** July 2, 2026 (June finalized)
+**Last Updated:** August 2, 2026 (July finalized)
 
 ## What It Is
 Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, and calculates uptime percentage against a 99.9% SLA target. Delivered as an Excel workbook.
@@ -30,10 +30,11 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 6. **Apr 2026** - Completed month detail.
 7. **May 2026** - Completed month detail.
 8. **Jun 2026** - Completed month detail.
-9. **Jul 2026** - Stub tab (in progress, to be finalized after Jul 31).
-9. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
-10. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
-11. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
+9. **Jul 2026** - Completed month detail.
+10. **Aug 2026** - Stub tab (in progress, to be finalized after Aug 31).
+11. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
+12. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
+13. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
 
 ## Current Numbers
 | Month | Outages | Minutes | Uptime |
@@ -44,7 +45,8 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 | Apr 2026 | 4 | 25 | 99.9421% |
 | May 2026 | 2 | 4 | 99.9910% |
 | Jun 2026 | 2 | 4 | 99.9907% |
-| **YTD** | **22** | **104** | **99.9601%** |
+| Jul 2026 | 8 | 39 | 99.9126% |
+| **YTD** | **30** | **143** | **99.9532%** |
 
 SLA Status: MEETING TARGET (99.9%) - YTD; March individually was below monthly SLA (57 min > 44.64 min allowed)
 
