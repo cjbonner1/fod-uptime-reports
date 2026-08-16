@@ -20,10 +20,36 @@ light_fill = PatternFill("solid", fgColor="D6E4F0")
 green_font = Font(name=FN, size=11, bold=True, color="006100")
 
 # ============================================================
-# 2026 DATA (UPDATED: includes full Jan-Jul 2026 + Aug 2026 partial through 2026-08-02)
+# 2026 DATA (UPDATED: includes full Jan-Jul 2026 + Aug 2026 partial through 2026-08-16)
 # ============================================================
 raw_2026 = [
-    # Aug 2026 (partial through 2026-08-02)
+    # Aug 2026 (partial through 2026-08-16) -- all BST times converted to GMT (-1h)
+    ("2026-08-15 13:05","2026-08-15 13:07","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-15 06:35","2026-08-15 06:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-14 15:35","2026-08-14 15:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-14 13:05","2026-08-14 13:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-14 07:35","2026-08-14 07:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-14 05:35","2026-08-14 05:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-13 18:05","2026-08-13 18:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-13 14:05","2026-08-13 14:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-13 08:35","2026-08-13 08:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-12 16:09","2026-08-12 16:38","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-10 12:43","2026-08-10 12:44","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-10 10:42","2026-08-10 12:40","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-10 10:12","2026-08-10 10:40","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-10 07:41","2026-08-10 10:10","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 20:38","2026-08-09 22:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 20:08","2026-08-09 20:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 19:12","2026-08-09 20:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 16:12","2026-08-09 19:10","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 13:12","2026-08-09 16:10","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-09 11:32","2026-08-09 13:11","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 06:57","2026-08-07 07:31","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 03:38","2026-08-07 05:08","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 03:12","2026-08-07 03:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 02:38","2026-08-07 03:10","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 01:54","2026-08-07 02:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-07 01:13","2026-08-07 01:51","Outage","Fortify on Demand - Vulncat"),
     ("2026-08-01 12:15","2026-08-01 12:16","Outage","Fortify on Demand - Vulncat"),
     # Jul 2026 (COMPLETE)
     ("2026-07-30 04:56","2026-07-30 07:22","Maintenance","Fortify on Demand Tenant Portal - AMS"),
@@ -392,7 +418,7 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* August 2026 is in progress. Will be finalized after August 31, 2026.").font = note_font
+ws.cell(row=row, column=1, value="* August 2026 is in progress (partial through August 16, 2026). Will be finalized after August 31, 2026.").font = note_font
 row += 2
 
 # SLA block
@@ -1183,7 +1209,7 @@ ws_aug.column_dimensions['E'].width = 18
 r = 1
 ws_aug.cell(row=r, column=1, value="August 2026 - Monthly Detail (In Progress)").font = title_font
 r += 2
-ws_aug.cell(row=r, column=1, value="Month in progress. Will be finalized after August 31, 2026.").font = note_font
+ws_aug.cell(row=r, column=1, value="Month in progress. Partial data through August 16, 2026. Will be finalized after August 31, 2026.").font = note_font
 r += 2
 
 aug_min = 44640
@@ -1276,7 +1302,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: August 2, 2026 (July 2026 finalized; 7 new outages added for Jul 17-31: Jul 20 Vulncat 2 min, Jul 24 FedRAMP Portal/API + AMS SAST + Vulncat multi-component event, all times converted from BST to GMT; Aug 1 Vulncat outage 1 min added to Aug stub; Jul 29-30 maintenance window added).")
+r = write_note(r, "Last updated: August 16, 2026 (Mid-month update; 26 new Vulncat outages added for Aug 7-15, all BST converted to GMT; large Vulncat outage cluster Aug 7 (260 min), Aug 9 (625 min), Aug 10 (296 min), plus smaller events Aug 12-15; Aug 2026 partial through 2026-08-16).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -1402,7 +1428,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: August 2, 2026")
+r = write_note(r, "Last updated: August 16, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")

@@ -5,7 +5,7 @@
 **Build Script:** build_update_feb.py (Python/openpyxl, generates entire workbook from scratch)
 **Owner:** Chance Bonner (cbonner@opentext.com)
 **Created:** February 19, 2026
-**Last Updated:** August 2, 2026 (July finalized)
+**Last Updated:** August 16, 2026 (mid-month Aug update; 26 new Vulncat outages Aug 7-15)
 
 ## What It Is
 Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, and calculates uptime percentage against a 99.9% SLA target. Delivered as an Excel workbook.
@@ -31,7 +31,7 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 7. **May 2026** - Completed month detail.
 8. **Jun 2026** - Completed month detail.
 9. **Jul 2026** - Completed month detail.
-10. **Aug 2026** - Stub tab (in progress, to be finalized after Aug 31).
+10. **Aug 2026** - Stub tab (in progress, partial through Aug 16; 27 outages, 1221 min to date).
 11. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
 12. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
 13. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
@@ -46,6 +46,7 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages, maintenance, 
 | May 2026 | 2 | 4 | 99.9910% |
 | Jun 2026 | 2 | 4 | 99.9907% |
 | Jul 2026 | 8 | 39 | 99.9126% |
+| Aug 2026 (partial thru 8/16) | 27 | 1221 | n/a (in progress) |
 | **YTD** | **30** | **143** | **99.9532%** |
 
 SLA Status: MEETING TARGET (99.9%) - YTD; March individually was below monthly SLA (57 min > 44.64 min allowed)
