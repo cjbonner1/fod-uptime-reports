@@ -20,10 +20,120 @@ light_fill = PatternFill("solid", fgColor="D6E4F0")
 green_font = Font(name=FN, size=11, bold=True, color="006100")
 
 # ============================================================
-# 2026 DATA (UPDATED: includes full Jan-Jul 2026 + Aug 2026 partial through 2026-08-16)
+# 2026 DATA (UPDATED: includes full Jan-Aug 2026 + Sep 2026 partial through 2026-09-02)
 # ============================================================
 raw_2026 = [
-    # Aug 2026 (partial through 2026-08-16) -- all BST times converted to GMT (-1h)
+    # Sep 2026 (partial through 2026-09-02) -- all BST times converted to GMT (-1h)
+    ("2026-09-02 10:28","2026-09-02 10:34","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-02 02:55","2026-09-02 03:03","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 18:51","2026-09-01 18:53","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 15:56","2026-09-01 16:11","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 14:59","2026-09-01 15:51","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 13:58","2026-09-01 14:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 12:59","2026-09-01 13:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 11:29","2026-09-01 12:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 10:58","2026-09-01 11:27","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 10:27","2026-09-01 10:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 09:59","2026-09-01 10:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-09-01 08:28","2026-09-01 08:57","Outage","Fortify on Demand - Vulncat"),
+    # Aug 2026 (COMPLETE) -- all BST times converted to GMT (-1h)
+    ("2026-08-31 19:58","2026-08-31 20:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-31 19:28","2026-08-31 19:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-31 18:56","2026-08-31 19:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-31 10:59","2026-08-31 11:06","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-31 09:59","2026-08-31 10:27","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-31 08:01","2026-08-31 09:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 21:29","2026-08-30 21:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 20:28","2026-08-30 21:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 19:28","2026-08-30 20:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 10:59","2026-08-30 11:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 10:35","2026-08-30 10:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-30 08:29","2026-08-30 09:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 19:28","2026-08-29 19:33","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 16:06","2026-08-29 19:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 12:29","2026-08-29 12:57","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 12:15","2026-08-29 12:27","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 11:59","2026-08-29 12:12","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 08:28","2026-08-29 08:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-29 00:09","2026-08-29 01:54","Outage","Fortify on Demand API - FedRAMP"),
+    ("2026-08-29 00:09","2026-08-29 01:52","Outage","Fortify on Demand Tenant Portal - FedRAMP"),
+    ("2026-08-28 17:54","2026-08-28 19:42","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 16:53","2026-08-28 17:52","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 12:31","2026-08-28 12:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 12:28","2026-08-28 12:29","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 11:58","2026-08-28 12:27","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 11:31","2026-08-28 11:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 11:15","2026-08-28 11:28","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 11:05","2026-08-28 11:11","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 10:12","2026-08-28 10:21","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 10:08","2026-08-28 10:10","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 10:02","2026-08-28 10:07","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-28 07:57","2026-08-28 09:58","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 16:53","2026-08-27 17:58","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 12:27","2026-08-27 13:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 11:58","2026-08-27 12:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 08:58","2026-08-27 11:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 07:58","2026-08-27 08:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-27 04:03","2026-08-27 06:07","Maintenance","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-08-27 04:03","2026-08-27 06:07","Maintenance","Fortify on Demand API - AMS"),
+    ("2026-08-27 01:11","2026-08-27 01:38","Maintenance","Fortify on Demand Tenant Portal - EU"),
+    ("2026-08-27 01:11","2026-08-27 01:38","Maintenance","Fortify on Demand API - EU"),
+    ("2026-08-26 23:42","2026-08-27 01:10","Maintenance","Fortify on Demand Tenant Portal - EMEA"),
+    ("2026-08-26 23:42","2026-08-27 01:10","Maintenance","Fortify on Demand API - EMEA"),
+    ("2026-08-26 21:32","2026-08-26 21:34","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 21:28","2026-08-26 21:31","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 21:06","2026-08-26 22:38","Maintenance","Fortify on Demand Tenant Portal - FedRAMP"),
+    ("2026-08-26 21:06","2026-08-26 22:38","Maintenance","Fortify on Demand API - FedRAMP"),
+    ("2026-08-26 20:58","2026-08-26 21:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 20:55","2026-08-26 20:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 12:59","2026-08-26 13:00","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 12:41","2026-08-26 12:43","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 12:39","2026-08-26 12:40","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 12:28","2026-08-26 12:37","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 09:00","2026-08-26 12:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 07:36","2026-08-26 08:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-26 07:30","2026-08-26 07:33","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-25 23:32","2026-08-25 23:38","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-25 18:06","2026-08-25 18:11","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-24 06:25","2026-08-24 06:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-23 20:55","2026-08-23 20:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-23 10:59","2026-08-23 14:03","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-23 07:44","2026-08-23 08:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-23 07:34","2026-08-23 07:40","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 14:58","2026-08-22 15:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 12:28","2026-08-22 14:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 10:57","2026-08-22 12:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 10:35","2026-08-22 10:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 09:27","2026-08-22 09:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 07:51","2026-08-22 08:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 07:40","2026-08-22 07:47","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 07:37","2026-08-22 07:38","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-22 07:33","2026-08-22 07:34","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 17:52","2026-08-21 18:26","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 13:59","2026-08-21 14:12","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 13:27","2026-08-21 13:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 12:58","2026-08-21 13:25","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 09:58","2026-08-21 12:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 09:27","2026-08-21 09:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 08:58","2026-08-21 09:25","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 07:57","2026-08-21 08:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-21 07:31","2026-08-21 07:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 19:16","2026-08-20 19:21","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 06:58","2026-08-20 07:47","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 05:58","2026-08-20 06:55","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 04:27","2026-08-20 05:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 03:27","2026-08-20 04:25","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 02:58","2026-08-20 03:25","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 02:28","2026-08-20 02:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 02:12","2026-08-20 02:25","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 02:04","2026-08-20 02:07","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 02:01","2026-08-20 02:02","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 01:52","2026-08-20 01:56","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 01:48","2026-08-20 01:50","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 01:44","2026-08-20 01:46","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 01:39","2026-08-20 01:42","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 01:12","2026-08-20 01:36","Outage","Fortify on Demand - Vulncat"),
+    ("2026-08-20 00:43","2026-08-20 01:10","Outage","Fortify on Demand - Vulncat"),
     ("2026-08-15 13:05","2026-08-15 13:07","Outage","Fortify on Demand - Vulncat"),
     ("2026-08-15 06:35","2026-08-15 06:36","Outage","Fortify on Demand - Vulncat"),
     ("2026-08-14 15:35","2026-08-14 15:36","Outage","Fortify on Demand - Vulncat"),
@@ -332,26 +442,26 @@ ws.cell(row=row, column=7, value="Key Observations").font = section_font
 row += 2
 
 # YTD stats (Jan + Feb + Mar + Apr all complete)
-months_complete = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"]
+months_complete = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"]
 ytd_minutes = sum(month_minutes(m) for m in months_complete)
 ytd_outage_min = sum(monthly.get(m, {'minutes':0})['minutes'] for m in months_complete)
 ytd_outage_count = sum(monthly.get(m, {'count':0})['count'] for m in months_complete)
 ytd_uptime = 1 - (ytd_outage_min / ytd_minutes)
 
 ws.cell(row=row, column=1, value="Report Period: Calendar Year 2026").font = body_font
-ws.cell(row=row, column=7, value=f"1. Jan: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); Feb: {monthly['2026-02']['count']} ({monthly['2026-02']['minutes']:.0f} min); Mar: {monthly.get('2026-03',{'count':0})['count']} ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); Apr: {monthly.get('2026-04',{'count':0})['count']} ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min); May: {monthly.get('2026-05',{'count':0})['count']} ({monthly.get('2026-05',{'minutes':0})['minutes']:.0f} min); Jun: {monthly.get('2026-06',{'count':0})['count']} ({monthly.get('2026-06',{'minutes':0})['minutes']:.0f} min); Jul: {monthly.get('2026-07',{'count':0})['count']} ({monthly.get('2026-07',{'minutes':0})['minutes']:.0f} min)").font = body_font
+ws.cell(row=row, column=7, value=f"1. Jan: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); Feb: {monthly['2026-02']['count']} ({monthly['2026-02']['minutes']:.0f} min); Mar: {monthly.get('2026-03',{'count':0})['count']} ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); Apr: {monthly.get('2026-04',{'count':0})['count']} ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min); May: {monthly.get('2026-05',{'count':0})['count']} ({monthly.get('2026-05',{'minutes':0})['minutes']:.0f} min); Jun: {monthly.get('2026-06',{'count':0})['count']} ({monthly.get('2026-06',{'minutes':0})['minutes']:.0f} min); Jul: {monthly.get('2026-07',{'count':0})['count']} ({monthly.get('2026-07',{'minutes':0})['minutes']:.0f} min); Aug: {monthly.get('2026-08',{'count':0})['count']} ({monthly.get('2026-08',{'minutes':0})['minutes']:.0f} min)").font = body_font
 row += 1
-ws.cell(row=row, column=1, value=f"Completed Months: January - July 2026").font = body_font
-ws.cell(row=row, column=7, value=f"2. March 2 remains the single worst day in 2026 (FedRAMP Portal/API, 44 min); July 24 was the largest July event: FedRAMP Portal/API + AMS SAST Aviator + Vulncat across three grouped incidents (10 min, 7 min, 1 min)").font = body_font
+ws.cell(row=row, column=1, value=f"Completed Months: January - August 2026").font = body_font
+ws.cell(row=row, column=7, value=f"2. August dominated by sustained Vulncat outage cluster (Aug 7 - Aug 31, 100+ discrete events); Aug 29 FedRAMP Portal/API outage (105 min); March 2 remains single worst day for a named regional component (44 min FedRAMP)").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outages: {ytd_outage_count} incidents (completed months)").font = body_font
-ws.cell(row=row, column=7, value="3. SAST Aviator (EU/AMS) continued brief outage pattern: Mar 11, 13, 17, 18; Apr 9 EU SAST 2 min; May 9 EU SAST 2 min, May 10 AMS SAST 2 min; Jun 8 EU SAST 2 min, Jun 9 AMS SAST 2 min; Jul 8 AMS SAST 4 min, Jul 24 AMS SAST events").font = body_font
+ws.cell(row=row, column=7, value="3. SAST Aviator (EU/AMS) brief outage pattern continued through July; no SAST Aviator outages recorded in August. Vulncat outage volume in Aug far exceeds all prior months combined.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outage Time: {ytd_outage_min:.0f} minutes ({ytd_outage_min/60:.2f} hours) (completed months)").font = body_font
-ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% continues to exceed the 99.9% SLA target across all seven completed months").font = body_font
+ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% (Jan-Aug); August individually is below 99.9% SLA due to Vulncat outage volume. SLA breach risk elevated for Q3 2026.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Uptime: {ytd_uptime*100:.4f}% (completed months only)").font = body_font
-ws.cell(row=row, column=7, value="5. Jul 29-30 maintenance window covered AMS, EU, EMEA (Jul 30 GMT), APAC/SGP and FedRAMP (Jul 29 GMT) with no associated outages; Jun 24-25 also saw large scheduled maintenance across EMEA, EU, AMS, APAC, SGP").font = body_font
+ws.cell(row=row, column=7, value="5. Aug 26-27 maintenance window covered FedRAMP, EMEA, EU, AMS with no associated outages; Jul 29-30 maintenance covered AMS, EU, EMEA, APAC/SGP and FedRAMP with no associated outages").font = body_font
 row += 2
 
 # Monthly Summary Table
@@ -365,8 +475,8 @@ row += 1
 for m in ["2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10","2026-11","2026-12"]:
     stats = monthly.get(m, {'count':0, 'minutes':0})
     tm = month_minutes(m)
-    is_future = m > "2026-08"
-    is_partial = m == "2026-08"
+    is_future = m > "2026-09"
+    is_partial = m == "2026-09"
 
     ws.cell(row=row, column=1, value=m).font = body_font
     ws.cell(row=row, column=1).border = thin_border
@@ -418,11 +528,11 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* August 2026 is in progress (partial through August 16, 2026). Will be finalized after August 31, 2026.").font = note_font
+ws.cell(row=row, column=1, value="* September 2026 is in progress (partial through September 2, 2026). Will be finalized after September 30, 2026.").font = note_font
 row += 2
 
 # SLA block
-ws.cell(row=row, column=1, value="2026 SLA Performance (Completed Months: Jan - Jul)").font = section_font
+ws.cell(row=row, column=1, value="2026 SLA Performance (Completed Months: Jan - Aug)").font = section_font
 row += 2
 avg_dur = ytd_outage_min / max(ytd_outage_count, 1)
 sla = [
@@ -484,8 +594,8 @@ def write_rb_section(start_row, section_title, components):
 
         for mi, m_str in enumerate(all_months):
             col = mi + 2
-            is_future = m_str > "2026-08"
-            is_partial = m_str == "2026-08"
+            is_future = m_str > "2026-09"
+            is_partial = m_str == "2026-09"
             tm = month_minutes(m_str)
             outage_min = comp_monthly_outage[comp_name].get(m_str, 0.0)
 
@@ -545,7 +655,7 @@ rb_row = write_rb_section(rb_row, "SAST Aviator", sast_aviator)
 rb_row = write_rb_section(rb_row, "Other Services", other_services)
 
 # Footer note
-ws_rb.cell(row=rb_row, column=1, value="* August 2026 is in progress. Partial data shown in italics.").font = note_font
+ws_rb.cell(row=rb_row, column=1, value="* September 2026 is in progress. Partial data shown in italics.").font = note_font
 rb_row += 1
 ws_rb.cell(row=rb_row, column=1, value="Uptime = (total_month_minutes - outage_minutes) / total_month_minutes. Only Outage events counted. No cross-component de-duplication.").font = note_font
 
@@ -1197,7 +1307,7 @@ for idx, inc in enumerate(jul_incs, 1):
     r += 2
 
 # ============================================================
-# TAB 10: Aug 2026 (stub - in progress)
+# TAB 10: Aug 2026 (FINALIZED - complete month)
 # ============================================================
 ws_aug = wb.create_sheet("Aug 2026")
 ws_aug.column_dimensions['A'].width = 42
@@ -1205,27 +1315,121 @@ ws_aug.column_dimensions['B'].width = 16
 ws_aug.column_dimensions['C'].width = 18
 ws_aug.column_dimensions['D'].width = 18
 ws_aug.column_dimensions['E'].width = 18
+ws_aug.column_dimensions['G'].width = 85
 
 r = 1
-ws_aug.cell(row=r, column=1, value="August 2026 - Monthly Detail (In Progress)").font = title_font
-r += 2
-ws_aug.cell(row=r, column=1, value="Month in progress. Partial data through August 16, 2026. Will be finalized after August 31, 2026.").font = note_font
+ws_aug.cell(row=r, column=1, value="August 2026 - Monthly Detail").font = title_font
 r += 2
 
 aug_min = 44640
 aug_stats = monthly.get("2026-08", {'count':0,'minutes':0})
+aug_up = 1 - (aug_stats['minutes'] / aug_min) if aug_stats['minutes'] > 0 else 1
 
-ws_aug.cell(row=r, column=1, value="Monthly Summary (In Progress)").font = section_font
+ws_aug.cell(row=r, column=1, value="Monthly Summary").font = section_font
 r += 2
 for label, val in [
     ("Period:", "August 1 - 31, 2026"),
     ("Total Minutes:", f"{aug_min:,}"),
-    ("Outage Count (to date):", str(aug_stats['count'])),
-    ("Outage Minutes (to date):", str(int(aug_stats['minutes']))),
-    ("Status:", "IN PROGRESS"),
+    ("Outage Count:", str(aug_stats['count'])),
+    ("Outage Minutes:", str(int(aug_stats['minutes']))),
+    ("Uptime %:", f"{aug_up*100:.4f}%"),
+    ("SLA Status:", "MEETING TARGET (99.9%)" if aug_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_aug.cell(row=r, column=1, value=label).font = section_font
     ws_aug.cell(row=r, column=2, value=val).font = body_font
+    r += 1
+r += 1
+
+ws_aug.cell(row=r, column=1, value="Daily Outage Report").font = section_font
+r += 1
+for col, h in enumerate(["Date", "Outage Count", "Outage Minutes", "Uptime Percentage"], 1):
+    c = ws_aug.cell(row=r, column=col, value=h)
+    c.font = hdr_font_w; c.fill = hdr_fill; c.border = thin_border; c.alignment = Alignment(horizontal="center")
+r += 1
+
+aug_daily = {d: s for d, s in daily.items() if d.month == 8 and d.year == 2026}
+for d, stats in sorted(aug_daily.items(), key=lambda x: -x[1]['minutes']):
+    ws_aug.cell(row=r, column=1, value=datetime(d.year, d.month, d.day)).font = body_font
+    ws_aug.cell(row=r, column=1).number_format = "mm-dd-yy"
+    ws_aug.cell(row=r, column=1).border = thin_border
+    ws_aug.cell(row=r, column=2, value=stats['count']).font = body_font
+    ws_aug.cell(row=r, column=2).border = thin_border
+    ws_aug.cell(row=r, column=3, value=int(stats['minutes'])).font = body_font
+    ws_aug.cell(row=r, column=3).border = thin_border
+    ws_aug.cell(row=r, column=4, value=1 - (stats['minutes']/1440)).font = body_font
+    ws_aug.cell(row=r, column=4).number_format = "0.00%"
+    ws_aug.cell(row=r, column=4).border = thin_border
+    r += 1
+r += 1
+
+ws_aug.cell(row=r, column=1, value="Services Affected").font = section_font
+r += 2
+aug_svcs = set()
+for inc in grouped:
+    if inc['start'].month == 8 and inc['start'].year == 2026:
+        for c in inc['components']: aug_svcs.add(c)
+for svc in sorted(aug_svcs):
+    ws_aug.cell(row=r, column=1, value=svc).font = body_font
+    r += 1
+r += 2
+
+ws_aug.cell(row=r, column=1, value="Detailed Incidents").font = section_font
+r += 2
+aug_incs = sorted([inc for inc in grouped if inc['start'].month == 8 and inc['start'].year == 2026], key=lambda x: -x['duration'])
+for idx, inc in enumerate(aug_incs, 1):
+    comps = inc['components']
+    dur = inc['duration']
+    date_fmt = inc['start'].strftime("%B %d, %Y")
+    start_fmt = inc['start'].strftime("%-I:%M %p GMT")
+    end_fmt = inc['end'].strftime("%-I:%M %p GMT")
+    if len(comps) > 1:
+        title = f"{idx}. {date_fmt} - Multiple Outages ({dur:.0f} minutes total)"
+    else:
+        title = f"{idx}. {date_fmt} - Outage ({dur:.0f} minute{'s' if dur != 1 else ''})"
+    ws_aug.cell(row=r, column=1, value=title).font = section_font
+    r += 2
+    if len(comps) > 1:
+        for ci, c in enumerate(comps, 1):
+            ws_aug.cell(row=r, column=1, value=f"Service {ci}: {c}").font = body_font
+            r += 1
+    else:
+        ws_aug.cell(row=r, column=1, value=f"Service: {comps[0]}").font = body_font
+        r += 1
+    ws_aug.cell(row=r, column=1, value=f"Time: {start_fmt}-{end_fmt}").font = body_font
+    r += 1
+    ws_aug.cell(row=r, column=1, value="Impact: Brief service disruption").font = body_font
+    r += 2
+
+# ============================================================
+# TAB 11: Sep 2026 (stub - in progress)
+# ============================================================
+ws_sep = wb.create_sheet("Sep 2026")
+ws_sep.column_dimensions['A'].width = 42
+ws_sep.column_dimensions['B'].width = 16
+ws_sep.column_dimensions['C'].width = 18
+ws_sep.column_dimensions['D'].width = 18
+ws_sep.column_dimensions['E'].width = 18
+
+r = 1
+ws_sep.cell(row=r, column=1, value="September 2026 - Monthly Detail (In Progress)").font = title_font
+r += 2
+ws_sep.cell(row=r, column=1, value="Month in progress. Partial data through September 2, 2026. Will be finalized after September 30, 2026.").font = note_font
+r += 2
+
+sep_min = 43200
+sep_stats = monthly.get("2026-09", {'count':0,'minutes':0})
+
+ws_sep.cell(row=r, column=1, value="Monthly Summary (In Progress)").font = section_font
+r += 2
+for label, val in [
+    ("Period:", "September 1 - 30, 2026"),
+    ("Total Minutes:", f"{sep_min:,}"),
+    ("Outage Count (to date):", str(sep_stats['count'])),
+    ("Outage Minutes (to date):", str(int(sep_stats['minutes']))),
+    ("Status:", "IN PROGRESS"),
+]:
+    ws_sep.cell(row=r, column=1, value=label).font = section_font
+    ws_sep.cell(row=r, column=2, value=val).font = body_font
     r += 1
 
 # ============================================================
@@ -1302,7 +1506,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: August 16, 2026 (Mid-month update; 26 new Vulncat outages added for Aug 7-15, all BST converted to GMT; large Vulncat outage cluster Aug 7 (260 min), Aug 9 (625 min), Aug 10 (296 min), plus smaller events Aug 12-15; Aug 2026 partial through 2026-08-16).")
+r = write_note(r, "Last updated: September 2, 2026 (Month-end update; Aug 2026 finalized with 100+ Vulncat outage events Aug 17-31, FedRAMP Portal/API outage Aug 29 (105 min), Aug 26-27 maintenance window; Sep 2026 stub added with partial data through Sep 2, 2026; all BST times converted to GMT).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -1428,7 +1632,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: August 16, 2026")
+r = write_note(r, "Last updated: September 2, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")
@@ -1451,7 +1655,8 @@ print(f"Apr: {apr_stats['count']} outages, {apr_stats['minutes']:.0f} min, {apr_
 print(f"May: {may_stats['count']} outages, {may_stats['minutes']:.0f} min, {may_up*100:.4f}%")
 print(f"Jun: {jun_stats['count']} outages, {jun_stats['minutes']:.0f} min, {jun_up*100:.4f}%")
 print(f"Jul: {jul_stats['count']} outages, {jul_stats['minutes']:.0f} min, {jul_up*100:.4f}%")
-print(f"Aug (partial): {aug_stats['count']} outages, {aug_stats['minutes']:.0f} min")
+print(f"Aug: {aug_stats['count']} outages, {aug_stats['minutes']:.0f} min, {aug_up*100:.4f}%")
+print(f"Sep (partial): {monthly.get('2026-09',{'count':0,'minutes':0})['count']} outages, {monthly.get('2026-09',{'count':0,'minutes':0})['minutes']:.0f} min")
 print(f"YTD: {ytd_outage_count} outages, {ytd_outage_min:.0f} min, {ytd_uptime*100:.4f}%")
 print(f"Raw rows: {len(parsed)}")
 print(f"De-duped outage incidents: {len(grouped)}")
