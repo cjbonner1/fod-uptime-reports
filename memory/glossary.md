@@ -4,7 +4,7 @@
 | Term | Meaning | Context |
 |------|---------|---------|
 | FoD | Fortify on Demand | OpenText AppSec platform |
-| SLA | Service Level Agreement | FoD target: 99.9% uptime |
+| SLA | Service Level Agreement | No target asserted by this report, measured availability only |
 | SAST | Static Application Security Testing | Aviator service (eu/ams) |
 | GMT | Greenwich Mean Time | All status page times are GMT |
 | YTD | Year to Date | Calculated from completed months only |

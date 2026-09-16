@@ -7,7 +7,7 @@ Chance Bonner (cbonner@opentext.com). Security/data professional at OpenText. Wo
 | Term | Meaning |
 |------|---------|
 | FoD | Fortify on Demand (OpenText application security platform) |
-| SLA | Service Level Agreement; FoD target is 99.9% uptime |
+| SLA | Service Level Agreement. This report states measured availability and does not assert a target |
 | De-dup | De-duplication: grouping simultaneous Portal+API outages within 60s as one incident |
 | SAST Aviator | Static Application Security Testing service (eu/ams variants) |
 | Vulncat | Vulnerability Categorization service (global) |
@@ -16,7 +16,7 @@ Chance Bonner (cbonner@opentext.com). Security/data professional at OpenText. Wo
 ## Projects
 | Name | What |
 |------|------|
-| **FoD Uptime Report 2026** | Monthly uptime report from status.fortify.com/history. Excel workbook, updated monthly. Currently through May 2026. |
+| **FoD Uptime Report 2026** | Monthly uptime report from status.fortify.com/history. Excel workbook, updated monthly. Complete through Aug 2026, Sep in progress. Official number covers core services only from Aug 2026. |
 → Details: memory/projects/fod-uptime-report.md
 
 ## Preferences

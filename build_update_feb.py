@@ -362,7 +362,49 @@ for s, e, typ, comp in raw_2026:
     dur = max((ed - sd).total_seconds() / 60, 0)
     parsed.append((sd, ed, dur, typ, comp))
 
-outages_only = [(sd,ed,dur,typ,comp) for sd,ed,dur,typ,comp in parsed if typ == "Outage"]
+# ------------------------------------------------------------------
+# SCOPE OF THE OFFICIAL NUMBER (added 2026-09-16, work item 522)
+# The calculation itself is unchanged. Only the set of components that
+# feeds it is narrowed, and only from SCOPE_CUTOFF forward. Months before
+# the cutoff are left exactly as previously published so that a report
+# already in a client's hands still matches.
+# ------------------------------------------------------------------
+SCOPE_CUTOFF = "2026-08"
+CORE_BUCKETS = {
+    "FedRAMP Portal", "FedRAMP API",
+    "AMS Portal", "AMS API",
+    "EMEA Portal", "EMEA API",
+    "APAC Portal", "APAC API",
+    "SGP Portal", "SGP API",
+    "EU Portal", "EU API",
+}
+
+def _early_bucket(component_name):
+    # same mapping as resolve_bucket below, needed here before it is defined
+    for key, bucket in {
+        "Tenant Portal - FedRAMP": "FedRAMP Portal", "API - FedRAMP": "FedRAMP API",
+        "Tenant Portal - AMS": "AMS Portal", "API - AMS": "AMS API",
+        "Tenant Portal - EMEA": "EMEA Portal", "API - EMEA": "EMEA API",
+        "Tenant Portal - APAC": "APAC Portal", "API - APAC": "APAC API",
+        "Tenant Portal - SGP": "SGP Portal", "API - SGP": "SGP API",
+        "Tenant Portal - EU": "EU Portal", "API - EU": "EU API",
+        "eu-sast-aviator": "EU SAST Aviator", "ams-sast-aviator": "AMS SAST Aviator",
+        "Debricked Fortify Integration": "Debricked Fortify Integration",
+        "Vulncat": "Vulncat",
+    }.items():
+        if key in component_name:
+            return bucket
+    return component_name
+
+def in_official_scope(sd, comp):
+    if sd.strftime("%Y-%m") < SCOPE_CUTOFF:
+        return True
+    return _early_bucket(comp) in CORE_BUCKETS
+
+# every outage, used by the Regional Breakout tab and the tracked-not-counted sections
+outages_all = [(sd,ed,dur,typ,comp) for sd,ed,dur,typ,comp in parsed if typ == "Outage"]
+# the subset that drives the official uptime number
+outages_only = [t for t in outages_all if in_official_scope(t[0], t[4])]
 
 # De-dup: group simultaneous outages (start +/- 1 min)
 outages_sorted = sorted(outages_only, key=lambda x: x[0])
@@ -420,7 +462,7 @@ def resolve_bucket(component_name):
     return component_name
 
 comp_monthly_outage = defaultdict(lambda: defaultdict(float))
-for sd, ed, dur, typ, comp in outages_only:
+for sd, ed, dur, typ, comp in outages_all:
     m = sd.strftime("%Y-%m")
     bkt = resolve_bucket(comp)
     comp_monthly_outage[bkt][m] += dur
@@ -430,6 +472,96 @@ days_map = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 
 def month_minutes(m_str):
     mo = int(m_str[5:])
     return days_map[mo] * 1440
+
+# AMS leads as the anchor platform. FedRAMP sits last, it is the smallest tenant
+# base and the one most likely to skew a quick scan down the column.
+REGION_ORDER = [
+    ("AMS",     "AMS Portal",     "AMS API"),
+    ("EMEA",    "EMEA Portal",    "EMEA API"),
+    ("APAC",    "APAC Portal",    "APAC API"),
+    ("SGP",     "SGP Portal",     "SGP API"),
+    ("EU",      "EU Portal",      "EU API"),
+    ("FedRAMP", "FedRAMP Portal", "FedRAMP API"),
+]
+
+def region_outage_minutes(m_str, portal, api):
+    """Outage minutes for one region in one month, de-duplicated the SAME way
+    the Monthly Summary is. A Portal + API incident counts once, at the longer
+    of the two durations. This is why this column ties to the summary above."""
+    ev = []
+    for sd, ed, dur, typ, comp in outages_all:
+        if sd.strftime("%Y-%m") != m_str: continue
+        if resolve_bucket(comp) not in (portal, api): continue
+        ev.append((sd, dur))
+    ev.sort()
+    total, i = 0.0, 0
+    while i < len(ev):
+        sd, d = ev[i]; g = d; j = i + 1
+        while j < len(ev) and abs((ev[j][0] - sd).total_seconds()) <= 60:
+            g = max(g, ev[j][1]); j += 1
+        total += g; i = j
+    return total
+
+def write_month_regional(ws, r, m_str):
+    """Per-region uptime for one month, core services only.
+    Ties directly to the Regional Breakout tab (same per-component method,
+    no de-duplication), so a client who lands here sees his own region."""
+    r += 1  # breathing room under the Monthly Summary
+    tm = month_minutes(m_str)
+    ws.cell(row=r, column=1, value="Regional Breakout for This Month (Core Services)").font = section_font
+    r += 1
+    for col, h in enumerate(["Region", "Portal Uptime", "API Uptime", "Outage Minutes"], 1):
+        c = ws.cell(row=r, column=col, value=h)
+        c.font = hdr_font_w; c.fill = hdr_fill; c.border = thin_border
+        c.alignment = Alignment(horizontal="center")
+    r += 1
+    for region, portal, api in REGION_ORDER:
+        pm = comp_monthly_outage.get(portal, {}).get(m_str, 0.0)
+        am = comp_monthly_outage.get(api, {}).get(m_str, 0.0)
+        ws.cell(row=r, column=1, value=region).font = body_font
+        ws.cell(row=r, column=1).border = thin_border
+        for col, mins in ((2, pm), (3, am)):
+            up = 1 - (mins / tm)
+            c = ws.cell(row=r, column=col, value=up)
+            c.number_format = "0.0000%"; c.border = thin_border
+            c.alignment = Alignment(horizontal="center")
+            c.font = green_font if up >= 0.999 else body_font
+        c = ws.cell(row=r, column=4, value=int(region_outage_minutes(m_str, portal, api)))
+        c.font = body_font; c.border = thin_border
+        c.alignment = Alignment(horizontal="center")
+        r += 1
+    ws.cell(row=r, column=1, value="Uptime percentages are per component and match the Regional Breakout tab. Outage Minutes is de-duplicated and adds up to the Monthly Summary above.").font = note_font
+    return r + 2
+
+def write_month_tracked(ws, r, m_str):
+    """Add-on services: still reported, deliberately not in the official number."""
+    tm = month_minutes(m_str)
+    rows = []
+    for bkt, months in comp_monthly_outage.items():
+        if bkt in CORE_BUCKETS: continue
+        mins = months.get(m_str, 0.0)
+        if mins > 0: rows.append((bkt, mins))
+    if not rows: return r
+    rows.sort(key=lambda x: -x[1])
+    ws.cell(row=r, column=1, value="Tracked, Not Counted Toward the Official Number").font = section_font
+    r += 1
+    ws.cell(row=r, column=1, value="Add-on and informational services. Reported in full here and on the Regional Breakout tab, excluded from the uptime figure above.").font = note_font
+    r += 1
+    for col, h in enumerate(["Service", "Outage Minutes", "Component Uptime"], 1):
+        c = ws.cell(row=r, column=col, value=h)
+        c.font = hdr_font_w; c.fill = hdr_fill; c.border = thin_border
+        c.alignment = Alignment(horizontal="center")
+    r += 1
+    for bkt, mins in rows:
+        ws.cell(row=r, column=1, value=bkt).font = body_font
+        ws.cell(row=r, column=1).border = thin_border
+        c = ws.cell(row=r, column=2, value=int(mins)); c.font = body_font
+        c.border = thin_border; c.alignment = Alignment(horizontal="center")
+        c = ws.cell(row=r, column=3, value=1 - (mins / tm)); c.font = body_font
+        c.number_format = "0.0000%"; c.border = thin_border
+        c.alignment = Alignment(horizontal="center")
+        r += 1
+    return r + 2
 
 # ============================================================
 # TAB 1: 2026 Executive Summary
@@ -466,13 +598,13 @@ ws.cell(row=row, column=1, value="Report Period: Calendar Year 2026").font = bod
 ws.cell(row=row, column=7, value=f"1. Jan: {monthly['2026-01']['count']} outages ({monthly['2026-01']['minutes']:.0f} min); Feb: {monthly['2026-02']['count']} ({monthly['2026-02']['minutes']:.0f} min); Mar: {monthly.get('2026-03',{'count':0})['count']} ({monthly.get('2026-03',{'minutes':0})['minutes']:.0f} min); Apr: {monthly.get('2026-04',{'count':0})['count']} ({monthly.get('2026-04',{'minutes':0})['minutes']:.0f} min); May: {monthly.get('2026-05',{'count':0})['count']} ({monthly.get('2026-05',{'minutes':0})['minutes']:.0f} min); Jun: {monthly.get('2026-06',{'count':0})['count']} ({monthly.get('2026-06',{'minutes':0})['minutes']:.0f} min); Jul: {monthly.get('2026-07',{'count':0})['count']} ({monthly.get('2026-07',{'minutes':0})['minutes']:.0f} min); Aug: {monthly.get('2026-08',{'count':0})['count']} ({monthly.get('2026-08',{'minutes':0})['minutes']:.0f} min)").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"Completed Months: January - August 2026").font = body_font
-ws.cell(row=row, column=7, value=f"2. August dominated by sustained Vulncat outage cluster (Aug 7 - Aug 31, 100+ discrete events); Aug 29 FedRAMP Portal/API outage (105 min); March 2 remains single worst day for a named regional component (44 min FedRAMP)").font = body_font
+ws.cell(row=row, column=7, value=f"2. From August 2026 the official number covers core services only (Portal and API across FedRAMP, AMS, EMEA, APAC, SGP, EU). August core downtime was a single incident, the FedRAMP Portal and API outage on Aug 29 (105 min). Every other core component was at 100% in August.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outages: {ytd_outage_count} incidents (completed months)").font = body_font
-ws.cell(row=row, column=7, value="3. SAST Aviator (EU/AMS) brief outage pattern continued through July; no SAST Aviator outages recorded in August. Vulncat outage volume in Aug far exceeds all prior months combined.").font = body_font
+ws.cell(row=row, column=7, value="3. Add-on and informational services (Vulncat, SAST Aviator, Debricked) are reported in full on the Regional Breakout tab, below the tracking divider, and are excluded from the official figure from August 2026 forward. Vulncat outage volume in August far exceeded all prior months combined.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Outage Time: {ytd_outage_min:.0f} minutes ({ytd_outage_min/60:.2f} hours) (completed months)").font = body_font
-ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% (Jan-Aug); August individually is below 99.9% SLA due to Vulncat outage volume. SLA breach risk elevated for Q3 2026.").font = body_font
+ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% (Jan-Aug). August core downtime was driven entirely by the Aug 29 FedRAMP Portal and API outage. Months before August 2026 are unchanged from the versions previously issued.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Uptime: {ytd_uptime*100:.4f}% (completed months only)").font = body_font
 ws.cell(row=row, column=7, value="5. Aug 26-27 maintenance window covered FedRAMP, EMEA, EU, AMS with no associated outages; Jul 29-30 maintenance covered AMS, EU, EMEA, APAC/SGP and FedRAMP with no associated outages").font = body_font
@@ -546,7 +678,7 @@ ws.cell(row=row, column=1, value="* September 2026 is in progress (partial throu
 row += 2
 
 # SLA block
-ws.cell(row=row, column=1, value="2026 SLA Performance (Completed Months: Jan - Aug)").font = section_font
+ws.cell(row=row, column=1, value="2026 Availability Summary (Completed Months: Jan - Aug)").font = section_font
 row += 2
 avg_dur = ytd_outage_min / max(ytd_outage_count, 1)
 sla = [
@@ -556,12 +688,15 @@ sla = [
     f"Uptime Percentage: {ytd_uptime*100:.4f}%",
     f"Outage Count: {ytd_outage_count} incidents",
     f"Average Outage Duration: {avg_dur:.2f} minutes",
-    f"SLA Target: 99.9%",
-    f"SLA Status: MEETING TARGET" if ytd_uptime >= 0.999 else f"SLA Status: BELOW TARGET",
 ]
 for line in sla:
     ws.cell(row=row, column=1, value=line).font = body_font
     row += 1
+row += 1
+ws.cell(row=row, column=1, value="Scope: from August 2026 forward this figure covers core services only, the Tenant Portal and API across all regions.").font = note_font
+row += 1
+ws.cell(row=row, column=1, value="Add-on services (Vulncat, Debricked, SAST Aviator) remain reported on the Regional Breakout tab and do not roll into this figure. Months before August 2026 are unchanged from the versions previously issued.").font = note_font
+row += 1
 
 
 # ============================================================
@@ -654,17 +789,28 @@ def write_rb_section(start_row, section_title, components):
     return r + 1  # blank row after section
 
 core_services = [
-    "FedRAMP Portal", "FedRAMP API",
     "AMS Portal", "AMS API",
     "EMEA Portal", "EMEA API",
     "APAC Portal", "APAC API",
     "SGP Portal", "SGP API",
     "EU Portal", "EU API",
+    "FedRAMP Portal", "FedRAMP API",
 ]
 sast_aviator = ["AMS SAST Aviator", "EU SAST Aviator"]
 other_services = ["Debricked Fortify Integration", "Vulncat"]
 
+def write_rb_divider(r, text):
+    """Full-width banner separating the official number from tracked-only services."""
+    c = ws_rb.cell(row=r, column=1, value=text)
+    c.font = Font(name=FN, size=11, bold=True)
+    c.alignment = Alignment(horizontal="center")
+    for ci in range(1, 15):
+        ws_rb.cell(row=r, column=ci).border = thin_border
+    ws_rb.merge_cells(start_row=r, start_column=1, end_row=r, end_column=14)
+    return r + 2
+
 rb_row = write_rb_section(rb_row, "Core Services", core_services)
+rb_row = write_rb_divider(rb_row, "Tracked for visibility. Everything below this line is reported but is NOT included in the official uptime figure, from August 2026 forward.")
 rb_row = write_rb_section(rb_row, "SAST Aviator", sast_aviator)
 rb_row = write_rb_section(rb_row, "Other Services", other_services)
 
@@ -672,6 +818,10 @@ rb_row = write_rb_section(rb_row, "Other Services", other_services)
 ws_rb.cell(row=rb_row, column=1, value="* September 2026 is in progress. Partial data shown in italics.").font = note_font
 rb_row += 1
 ws_rb.cell(row=rb_row, column=1, value="Uptime = (total_month_minutes - outage_minutes) / total_month_minutes. Only Outage events counted. No cross-component de-duplication.").font = note_font
+rb_row += 1
+ws_rb.cell(row=rb_row, column=1, value="Core Services are the customer-facing Tenant Portal and API in each region. They are the only components in the official uptime figure from August 2026 forward.").font = note_font
+rb_row += 1
+ws_rb.cell(row=rb_row, column=1, value="SAST Aviator, Debricked and Vulncat are add-on services. They are tracked here in full for visibility and trending, and an outage in one of them does not move the official number.").font = note_font
 
 # ============================================================
 # TAB 3: Jan 2026 (detail tab - unchanged)
@@ -694,7 +844,7 @@ jan_up = 1 - (jan_stats['minutes'] / jan_min)
 
 ws_jan.cell(row=r, column=1, value="Monthly Summary").font = section_font
 r += 2
-for label, val in [("Period:", "January 1 - 31, 2026"), ("Total Minutes:", f"{jan_min:,}"), ("Outage Count:", str(jan_stats['count'])), ("Outage Minutes:", str(int(jan_stats['minutes']))), ("Uptime %:", f"{jan_up*100:.4f}%"), ("SLA Status:", "MEETING TARGET (99.9%)")]:
+for label, val in [("Period:", "January 1 - 31, 2026"), ("Total Minutes:", f"{jan_min:,}"), ("Outage Count:", str(jan_stats['count'])), ("Outage Minutes:", str(int(jan_stats['minutes']))), ("Uptime %:", f"{jan_up*100:.4f}%")]:
     ws_jan.cell(row=r, column=1, value=label).font = section_font
     ws_jan.cell(row=r, column=2, value=val).font = body_font
     r += 1
@@ -721,6 +871,10 @@ for d, stats in sorted(jan_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_jan.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_jan.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_jan.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_jan.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -781,7 +935,7 @@ feb_up = 1 - (feb_stats['minutes'] / feb_min)
 
 ws_feb.cell(row=r, column=1, value="Monthly Summary").font = section_font
 r += 2
-for label, val in [("Period:", "February 1 - 28, 2026"), ("Total Minutes:", f"{feb_min:,}"), ("Outage Count:", str(feb_stats['count'])), ("Outage Minutes:", str(int(feb_stats['minutes']))), ("Uptime %:", f"{feb_up*100:.4f}%"), ("SLA Status:", "MEETING TARGET (99.9%)")]:
+for label, val in [("Period:", "February 1 - 28, 2026"), ("Total Minutes:", f"{feb_min:,}"), ("Outage Count:", str(feb_stats['count'])), ("Outage Minutes:", str(int(feb_stats['minutes']))), ("Uptime %:", f"{feb_up*100:.4f}%")]:
     ws_feb.cell(row=r, column=1, value=label).font = section_font
     ws_feb.cell(row=r, column=2, value=val).font = body_font
     r += 1
@@ -809,6 +963,10 @@ for d, stats in sorted(feb_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_feb.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_feb.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_feb.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 # Service distribution
 ws_feb.cell(row=r, column=1, value="Services Affected").font = section_font
@@ -877,7 +1035,6 @@ for label, val in [
     ("Outage Count:", str(mar_stats['count'])),
     ("Outage Minutes:", str(int(mar_stats['minutes']))),
     ("Uptime %:", f"{mar_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if mar_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_mar.cell(row=r, column=1, value=label).font = section_font
     ws_mar.cell(row=r, column=2, value=val).font = body_font
@@ -905,6 +1062,10 @@ for d, stats in sorted(mar_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_mar.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_mar.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_mar.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_mar.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -971,7 +1132,6 @@ for label, val in [
     ("Outage Count:", str(apr_stats['count'])),
     ("Outage Minutes:", str(int(apr_stats['minutes']))),
     ("Uptime %:", f"{apr_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if apr_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_apr.cell(row=r, column=1, value=label).font = section_font
     ws_apr.cell(row=r, column=2, value=val).font = body_font
@@ -999,6 +1159,10 @@ for d, stats in sorted(apr_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_apr.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_apr.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_apr.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_apr.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -1065,7 +1229,6 @@ for label, val in [
     ("Outage Count:", str(may_stats['count'])),
     ("Outage Minutes:", str(int(may_stats['minutes']))),
     ("Uptime %:", f"{may_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if may_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_may.cell(row=r, column=1, value=label).font = section_font
     ws_may.cell(row=r, column=2, value=val).font = body_font
@@ -1093,6 +1256,10 @@ for d, stats in sorted(may_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_may.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_may.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_may.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_may.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -1159,7 +1326,6 @@ for label, val in [
     ("Outage Count:", str(jun_stats['count'])),
     ("Outage Minutes:", str(int(jun_stats['minutes']))),
     ("Uptime %:", f"{jun_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if jun_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_jun.cell(row=r, column=1, value=label).font = section_font
     ws_jun.cell(row=r, column=2, value=val).font = body_font
@@ -1187,6 +1353,10 @@ for d, stats in sorted(jun_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_jun.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_jun.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_jun.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_jun.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -1253,7 +1423,6 @@ for label, val in [
     ("Outage Count:", str(jul_stats['count'])),
     ("Outage Minutes:", str(int(jul_stats['minutes']))),
     ("Uptime %:", f"{jul_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if jul_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_jul.cell(row=r, column=1, value=label).font = section_font
     ws_jul.cell(row=r, column=2, value=val).font = body_font
@@ -1281,6 +1450,10 @@ for d, stats in sorted(jul_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_jul.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_jul.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_jul.cell(row=r, column=1, value="It is a combined figure across every service included in that month's figure. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_jul.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -1347,12 +1520,11 @@ for label, val in [
     ("Outage Count:", str(aug_stats['count'])),
     ("Outage Minutes:", str(int(aug_stats['minutes']))),
     ("Uptime %:", f"{aug_up*100:.4f}%"),
-    ("SLA Status:", "MEETING TARGET (99.9%)" if aug_up >= 0.999 else "BELOW TARGET"),
 ]:
     ws_aug.cell(row=r, column=1, value=label).font = section_font
     ws_aug.cell(row=r, column=2, value=val).font = body_font
     r += 1
-r += 1
+r = write_month_regional(ws_aug, r, "2026-08")
 
 ws_aug.cell(row=r, column=1, value="Daily Outage Report").font = section_font
 r += 1
@@ -1375,6 +1547,10 @@ for d, stats in sorted(aug_daily.items(), key=lambda x: -x[1]['minutes']):
     ws_aug.cell(row=r, column=4).border = thin_border
     r += 1
 r += 1
+ws_aug.cell(row=r, column=1, value="Daily uptime is measured against that day alone (1,440 minutes), not the full month, which is why it reads lower than the Uptime % above.").font = note_font
+r += 1
+ws_aug.cell(row=r, column=1, value="It is a combined figure across all core services for that date. The Monthly Summary at the top of this tab is the official number.").font = note_font
+r += 2
 
 ws_aug.cell(row=r, column=1, value="Services Affected").font = section_font
 r += 2
@@ -1445,6 +1621,7 @@ for label, val in [
     ws_sep.cell(row=r, column=1, value=label).font = section_font
     ws_sep.cell(row=r, column=2, value=val).font = body_font
     r += 1
+r = write_month_regional(ws_sep, r, "2026-09")
 
 # ============================================================
 # TAB 9: 2026 Incident Data (raw)
@@ -1538,6 +1715,17 @@ r = write_note(r, "so these do not represent true downtime. If a degradation eve
 r = write_note(r, "'Disaster Recovery Exercise' events are informational only and excluded.")
 r += 1
 
+r = write_note(r, "SCOPE OF THE OFFICIAL NUMBER", True)
+r = write_note(r, "From August 2026 forward, the headline uptime figure on the Executive Summary and the monthly tabs covers CORE SERVICES only:")
+r = write_note(r, "  Tenant Portal and API for FedRAMP, AMS, EMEA, APAC, SGP and EU. Twelve components in total.")
+r = write_note(r, "The calculation itself did not change. Same formula, same Outage-only rule, same de-duplication. Only the set of components feeding it is narrower.")
+r = write_note(r, "Add-on and informational services (Vulncat, SAST Aviator, Debricked Fortify Integration) continue to be tracked and reported in full")
+r = write_note(r, "on the Regional Breakout tab and in the Tracked, Not Counted section of each monthly tab. They no longer roll into the official figure.")
+r = write_note(r, "Reason: these are not services a client depends on to run and retrieve scans. Vulncat in particular is a public reference catalog.")
+r = write_note(r, "Months BEFORE August 2026 are deliberately left exactly as previously published, so a report already filed by a client still matches.")
+r = write_note(r, "The YTD figure therefore spans two scopes: January through July as originally issued, August forward core services only.")
+r += 1
+
 r = write_note(r, "DE-DUPLICATION LOGIC", True)
 r = write_note(r, "When the same incident hits multiple components simultaneously (e.g., FedRAMP Portal and FedRAMP API both go down at 2:45 PM),")
 r = write_note(r, "these are grouped into a single incident for counting purposes. The rule:")
@@ -1555,7 +1743,9 @@ r = write_note(r, "")
 r = write_note(r, "  Minutes per month: Jan=44640, Feb=40320, Mar=44640, Apr=43200, May=44640, Jun=43200,")
 r = write_note(r, "                     Jul=44640, Aug=44640, Sep=43200, Oct=44640, Nov=43200, Dec=44640")
 r = write_note(r, "  Minutes per day:   1440")
-r = write_note(r, "  SLA target:        99.9% (43.8 minutes of allowed downtime per month on a 30-day month)")
+r = write_note(r, "")
+r = write_note(r, "This report states measured availability only. It does not assert a service level target,")
+r = write_note(r, "and no pass or fail judgement is made against one. Any applicable target comes from the customer agreement.")
 r += 1
 
 r = write_note(r, "REGIONAL BREAKOUT TAB", True)
@@ -1577,7 +1767,7 @@ r += 1
 r = write_note(r, "FILE STRUCTURE", True)
 r = write_note(r, "Tab layout and what each tab contains:")
 r = write_note(r, "")
-r = write_note(r, "  [2026 Executive Summary]  -  The yearly roll-up. One table with all 12 months. YTD totals and SLA status.")
+r = write_note(r, "  [2026 Executive Summary]  -  The yearly roll-up. One table with all 12 months. YTD totals.")
 r = write_note(r, "                               Updated monthly. Future months show '-' until data is available.")
 r = write_note(r, "                               Key observations in column G. This is the tab leadership reads.")
 r = write_note(r, "")
@@ -1626,7 +1816,7 @@ r = write_note(r, "  5. Update the '2026 Executive Summary' tab:")
 r = write_note(r, "     - Fill in the newly completed month's row in the Monthly Uptime Summary table (count, minutes, hours, uptime %).")
 r = write_note(r, "     - Update the YTD TOTAL row to include the new month.")
 r = write_note(r, "     - Refresh Key Observations in column G if anything noteworthy happened.")
-r = write_note(r, "     - Update the SLA Performance block at the bottom.")
+r = write_note(r, "     - Update the Availability Summary block at the bottom.")
 r = write_note(r, "")
 r = write_note(r, "  6. The de-duplication rule (grouping events within 60 seconds) and the uptime formulas above")
 r = write_note(r, "     should be applied consistently. If you are using a tool or script to generate this, point it at the")
