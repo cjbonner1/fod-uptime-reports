@@ -20,10 +20,16 @@ light_fill = PatternFill("solid", fgColor="D6E4F0")
 green_font = Font(name=FN, size=11, bold=True, color="006100")
 
 # ============================================================
-# 2026 DATA (UPDATED: includes full Jan-Sep 2026 + Oct 2026 partial through 2026-10-02)
+# 2026 DATA (UPDATED: includes full Jan-Sep 2026 + Oct 2026 partial through 2026-10-15)
 # ============================================================
 raw_2026 = [
-    # Oct 2026 (partial through 2026-10-02) -- BST times converted to GMT (-1h)
+    # Oct 2026 (partial through 2026-10-15) -- BST times converted to GMT (-1h)
+    ("2026-10-12 06:16","2026-10-12 22:02","Service Degradation","Fortify on Demand Tenant Portal - SGP"),
+    ("2026-10-12 06:16","2026-10-12 22:02","Service Degradation","Fortify on Demand API - SGP"),
+    ("2026-10-05 02:36","2026-10-05 05:42","Service Degradation","Fortify on Demand Tenant Portal - AMS"),
+    ("2026-10-05 02:36","2026-10-05 05:42","Service Degradation","Fortify on Demand API - AMS"),
+    ("2026-10-03 05:54","2026-10-04 05:21","Service Degradation","Fortify on Demand Tenant Portal - SGP"),
+    ("2026-10-03 05:54","2026-10-04 05:21","Service Degradation","Fortify on Demand API - SGP"),
     ("2026-10-01 04:26","2026-10-01 05:49","Maintenance","Fortify on Demand Tenant Portal - AMS"),
     ("2026-10-01 04:26","2026-10-01 05:49","Maintenance","Fortify on Demand API - AMS"),
     ("2026-10-01 02:13","2026-10-01 03:39","Maintenance","Fortify on Demand Tenant Portal - EU"),
@@ -635,7 +641,7 @@ ws.cell(row=row, column=1, value=f"YTD Outage Time: {ytd_outage_min:.0f} minutes
 ws.cell(row=row, column=7, value=f"4. YTD uptime of {ytd_uptime*100:.4f}% (Jan-Sep). August core downtime was driven by the Aug 29 FedRAMP Portal and API outage (105 min). September added 8 minutes across 2 incidents. Months before August 2026 are unchanged from the versions previously issued.").font = body_font
 row += 1
 ws.cell(row=row, column=1, value=f"YTD Uptime: {ytd_uptime*100:.4f}% (completed months only)").font = body_font
-ws.cell(row=row, column=7, value="5. Sep 2026 maintenance: EU Sep 18, SGP Sep 24, FedRAMP Sep 25 with no associated outages; Sep 4-5 AMS maintenance window; Sep 22 AMS service degradation (not counted). Aug 26-27 maintenance covered FedRAMP, EMEA, EU, AMS with no associated outages.").font = body_font
+ws.cell(row=row, column=7, value="5. Sep 2026 maintenance: EU Sep 18, SGP Sep 24, FedRAMP Sep 25; Sep 4-5 AMS maintenance; Sep 22 AMS service degradation (not counted). Oct partial (through Oct 15): 0 core service outages; SGP service degradation Oct 3 and Oct 12, AMS service degradation Oct 5 (none counted toward official figure).").font = body_font
 row += 2
 
 # Monthly Summary Table
@@ -702,7 +708,7 @@ ws.cell(row=row, column=5, value=ytd_uptime).font = Font(name=FN, bold=True, siz
 ws.cell(row=row, column=5).number_format = "0.0000%"
 ws.cell(row=row, column=5).fill = light_fill; ws.cell(row=row, column=5).border = thin_border
 row += 1
-ws.cell(row=row, column=1, value="* October 2026 is in progress (partial through October 2, 2026). Will be finalized after October 31, 2026.").font = note_font
+ws.cell(row=row, column=1, value="* October 2026 is in progress (partial through October 15, 2026). Will be finalized after October 31, 2026.").font = note_font
 row += 2
 
 # SLA block
@@ -1729,7 +1735,7 @@ ws_oct.column_dimensions['E'].width = 18
 r = 1
 ws_oct.cell(row=r, column=1, value="October 2026 - Monthly Detail (In Progress)").font = title_font
 r += 2
-ws_oct.cell(row=r, column=1, value="Month in progress. Partial data through October 2, 2026. Will be finalized after October 31, 2026.").font = note_font
+ws_oct.cell(row=r, column=1, value="Month in progress. Partial data through October 15, 2026. Will be finalized after October 31, 2026.").font = note_font
 r += 2
 
 oct_min = 44640
@@ -1823,7 +1829,7 @@ r = write_note(r, "ABOUT THIS FILE", True)
 r = write_note(r, "This workbook is the 2026 Fortify on Demand uptime report. It is structured for monthly updates and yearly rollup.")
 r = write_note(r, "It was first created in February 2026 using data scraped from https://status.fortify.com/history.")
 r = write_note(r, "A prior report covering September 2024 - September 2025 was produced separately. This file starts fresh at 2026 to avoid overlap.")
-r = write_note(r, "Last updated: October 2, 2026 (Monthly update; Sep 2026 finalized; added Sep 17-30 events and missed Sep 1-5 Vulncat entries; Oct 2026 stub added; all BST times converted to GMT).")
+r = write_note(r, "Last updated: October 16, 2026 (Mid-month update; added Oct 3-12 service degradation events; Oct partial through Oct 15; 0 core outages in Oct to date; all BST times converted to GMT).")
 r += 1
 
 r = write_note(r, "DATA SOURCE", True)
@@ -1962,7 +1968,7 @@ r += 1
 
 r = write_note(r, "CONTACT / HISTORY", True)
 r = write_note(r, "First created: February 19, 2026")
-r = write_note(r, "Last updated: October 2, 2026")
+r = write_note(r, "Last updated: October 16, 2026")
 r = write_note(r, "Created by: Chance Bonner (cbonner@opentext.com)")
 r = write_note(r, "Source reference: Previous 2025 report was a separate deliverable; this file does not overlap with it.")
 r = write_note(r, "Automation potential: The monthly update process follows a repeatable pattern and could be scripted.")
