@@ -5,7 +5,7 @@
 **Build Script:** build_update_feb.py (Python/openpyxl, generates entire workbook from scratch)
 **Owner:** Chance Bonner (cbonner@opentext.com)
 **Created:** February 19, 2026
-**Last Updated:** October 2, 2026 (Sep 2026 finalized; Oct 2026 stub added)
+**Last Updated:** November 2, 2026 (Oct 2026 finalized; Nov 2026 stub added)
 
 ## What It Is
 Monthly uptime report for Fortify on Demand (FoD). Tracks outages and maintenance and calculates uptime percentage. Delivered as an Excel workbook. The report states measured availability only and does not assert a service level target.
@@ -35,7 +35,8 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages and maintenanc
 9. **Jul 2026** - Completed month detail.
 10. **Aug 2026** - Completed month detail.
 11. **Sep 2026** - Completed month detail.
-12. **Oct 2026** - Stub tab (in progress, partial through Oct 2; 0 outages to date).
+12. **Oct 2026** - Completed month detail.
+13. **Nov 2026** - Stub tab (in progress; 0 outages to date).
 13. **2026 Incident Data** - Raw fact table. Every event (outage + maintenance) in reverse chronological order.
 14. **Bucket Mapping** - Reference table: 13 buckets mapping component strings to region/service categories.
 15. **Notes & Methodology** - Calculation docs, update instructions, formatting conventions. Also serves as a handoff playbook.
@@ -52,10 +53,11 @@ Monthly uptime report for Fortify on Demand (FoD). Tracks outages and maintenanc
 | Jul 2026 | 8 | 39 | 99.9126% |
 | Aug 2026 | 1 | 105 | 99.7648% |
 | Sep 2026 | 2 | 8 | 99.9815% |
-| Oct 2026 (partial thru 10/2) | 0 | 0 | n/a (in progress) |
-| **YTD (Jan-Sep)** | **33** | **256** | **99.9349%** |
+| Oct 2026 | 0 | 0 | 100.0000% |
+| Nov 2026 (in progress) | 0 | 0 | n/a (in progress) |
+| **YTD (Jan-Oct)** | **33** | **256** | **99.9415%** |
 
-Scope note: from Aug 2026 these figures cover core services only. Sep's 2 incidents: APAC Portal Sep 14 (4 min) and AMS Portal Sep 7 (4 min). SAST Aviator Sep 17 outage and all Vulncat outages are tracked-only. Aug incident was FedRAMP Portal and API outage on Aug 29 (105 min). Jan through Jul are unchanged from the versions previously issued and still include all services.
+Scope note: from Aug 2026 these figures cover core services only. Oct had 0 core outages; all events were Maintenance or Service Degradation. Sep's 2 incidents: APAC Portal Sep 14 (4 min) and AMS Portal Sep 7 (4 min). Aug incident was FedRAMP Portal and API outage on Aug 29 (105 min). Jan through Jul are unchanged from the versions previously issued and still include all services.
 
 ## Uptime Formula
 - Monthly: 1 - (Outage Minutes / Total Minutes in Month)
